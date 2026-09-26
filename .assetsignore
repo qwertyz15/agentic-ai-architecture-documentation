@@ -2,3 +2,5 @@
 .assetsignore
 .nojekyll
 wrangler.jsonc
+.wrangler
+.gitignore
