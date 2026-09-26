@@ -1,0 +1,40 @@
+flowchart LR
+    subgraph L1["1. Users & Channels"]
+        U[Web / Mobile / Slack / API / Voice]
+    end
+    subgraph L2["2. Orchestration Layer"]
+        RH[Request Handling<br/>auth · session · rate limit · validation]
+        ORCH[Agent Orchestrator]
+        PL[Planner / Reasoner]
+        SA[Sub-Agents<br/>Researcher · Analyst · Coder]
+        MM[Memory Manager]
+        AE[Action Executor]
+    end
+    subgraph L5["5. Guardrails"]
+        IG[Input Guardrails]
+        OG[Output Guardrails]
+    end
+    subgraph L3["3. Tools & Integrations"]
+        T[Search · DB · APIs · Enterprise · Sandbox · Storage · Messaging]
+    end
+    subgraph L4["4. Context & Memory"]
+        M[(Short-term · Long-term<br/>Vector Store · Knowledge Graph)]
+    end
+    subgraph L6["6. LLM Gateway"]
+        GW[Routing · Failover · Caching · Cost]
+    end
+    subgraph L7["7. Models"]
+        LLM[Proprietary & Open-Source LLMs]
+    end
+    subgraph L8["8. Observability"]
+        OBS[Logs · Traces · Metrics · Evals]
+    end
+    U -->|HTTPS / WSS| RH --> IG --> ORCH --> PL --> SA
+    SA <--> MM <--> M
+    SA --> AE --> T
+    T -->|results| AE --> SA
+    SA -->|prompts| GW --> LLM --> GW --> SA
+    SA --> OG --> RH -->|stream| U
+    ORCH -.-> OBS
+    AE -.-> OBS
+    GW -.-> OBS

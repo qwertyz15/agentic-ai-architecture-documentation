@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tools &amp; Integrations · Agentic AI Application Architecture</title>
+<meta name="description" content="Layer 3: search engines, databases, APIs, enterprise systems, sandboxed code execution, file storage and messaging, and the Model Context Protocol.">
+<link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+<script>(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}if(t!=='dark'&&t!=='light')t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);try{if(localStorage.getItem('sidebar')==='collapsed')document.documentElement.setAttribute('data-sidebar','collapsed')}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body style="--accent:#d6501b">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn" aria-label="Toggle navigation" title="Toggle sidebar" aria-controls="sidebar" aria-expanded="false"><span></span><span></span><span></span></button>
+  <a class="brand" href="index.html"><img src="assets/icons/logo.svg" alt="" width="28" height="28">Agentic AI Application Architecture</a>
+  <div class="search" id="search">
+    <input type="search" id="searchInput" placeholder="Search documentation…" autocomplete="off" aria-label="Search documentation">
+    <kbd>/</kbd>
+    <div class="search-results" id="searchResults" role="listbox" hidden></div>
+  </div>
+  <span class="version">v1.0</span>
+<button class="theme-btn" id="themeBtn" type="button" aria-label="Switch to dark mode" title="Toggle dark mode"><svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+</header>
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="Documentation">
+    <div class="sidebar-title">Design document</div>
+    <ul class="nav"><li class="nav-item"><a class="nav-link" href="index.html" style="--accent:#5b3fb5"><span class="nav-num">1</span>Introduction</a><button class="nav-toggle" aria-label="Toggle sections"></button><ul class="nav-sub"><li><a href="index.html#what-this-document-is">What this document is</a></li><li><a href="index.html#what-agentic-ai-is">What Agentic AI is</a></li><li><a href="index.html#three-generations-of-llm-applications">Three generations of LLM applications</a></li><li><a href="index.html#why-an-agent-based-architecture-is-required">Why an agent-based architecture is required</a></li><li><a href="index.html#characteristics-of-a-production-grade-agentic-system">Characteristics of a production-grade agentic system</a></li><li><a href="index.html#the-reference-architecture-at-a-glance">The reference architecture at a glance</a></li><li><a href="index.html#how-to-read-this-documentation">How to read this documentation</a></li></ul></li><li class="nav-item"><a class="nav-link" href="architecture-overview.html" style="--accent:#1d5fd1"><span class="nav-num">2</span>Architecture Overview</a><button class="nav-toggle" aria-label="Toggle sections"></button><ul class="nav-sub"><li><a href="architecture-overview.html#overview">Overview</a></li><li><a href="architecture-overview.html#the-request-lifecycle">The request lifecycle</a></li><li><a href="architecture-overview.html#the-four-flows">The four flows</a></li><li><a href="architecture-overview.html#layer-1-users-channels">Layer 1: Users &amp;amp; Channels</a></li><li><a href="architecture-overview.html#request-handling-layer-2-ingress-block">Request Handling (Layer 2, ingress block)</a></li><li><a href="architecture-overview.html#agentic-design-patterns">Agentic design patterns</a></li><li><a href="architecture-overview.html#best-practices">Best practices</a></li></ul></li><li class="nav-item"><a class="nav-link" href="agent-runtime.html" style="--accent:#1d5fd1"><span class="nav-num">3</span>Agent Runtime</a><button class="nav-toggle" aria-label="Toggle sections"></button><ul class="nav-sub"><li><a href="agent-runtime.html#overview">Overview</a></li><li><a href="agent-runtime.html#architecture">Architecture</a></li><li><a href="agent-runtime.html#implementation-guide">Implementation guide</a></li><li><a href="agent-runtime.html#example-implementation">Example implementation</a></li><li><a href="agent-runtime.html#best-practices">Best practices</a></li></ul></li><li class="nav-item"><a class="nav-link" href="memory-system.html" style="--accent:#5b3fb5"><span class="nav-num">4</span>Memory System</a><button class="nav-toggle" aria-label="Toggle sections"></button><ul class="nav-sub"><li><a href="memory-system.html#overview">Overview</a></li><li><a href="memory-system.html#architecture">Architecture</a></li><li><a href="memory-system.html#rag-architecture-integration">RAG architecture integration</a></li><li><a href="memory-system.html#agent-memory-engineering">Agent memory engineering</a></li><li><a href="memory-system.html#implementation-guide">Implementation guide</a></li><li><a href="memory-system.html#example-implementation">Example implementation</a></li><li><a href="memory-system.html#best-practices">Best practices</a></li></ul></li><li class="nav-item active"><a class="nav-link" href="tools-integrations.html" style="--accent:#d6501b"><span class="nav-num">5</span>Tools &amp; Integrations</a><button class="nav-toggle" aria-label="Toggle sections"></button><ul class="nav-sub"><li><a href="tools-integrations.html#overview">Overview</a></li><li><a href="tools-integrations.html#architecture">Architecture</a></li><li><a href="tools-integrations.html#model-context-protocol-mcp">Model Context Protocol (MCP)</a></li><li><a href="tools-integrations.html#implementation-guide">Implementation guide</a></li><li><a href="tools-integrations.html#example-implementation">Example implementation</a></li><li><a href="tools-integrations.html#best-practices">Best practices</a></li></ul></li><li class="nav-item"><a class="nav-link" href="guardrails.html" style="--accent:#c8102e"><span class="nav-num">6</span>Guardrails</a><button class="nav-toggle" aria-label="Toggle sections"></button><ul class="nav-sub"><li><a href="guardrails.html#overview">Overview</a></li><li><a href="guardrails.html#architecture">Architecture</a></li><li><a href="guardrails.html#implementation-guide">Implementation guide</a></li><li><a href="guardrails.html#example-implementation">Example implementation</a></li><li><a href="guardrails.html#best-practices">Best practices</a></li></ul></li><li class="nav-item"><a class="nav-link" href="llm-gateway.html" style="--accent:#0f8a3c"><span class="nav-num">7</span>LLM Gateway &amp; Models</a><button class="nav-toggle" aria-label="Toggle sections"></button><ul class="nav-sub"><li><a href="llm-gateway.html#overview">Overview</a></li><li><a href="llm-gateway.html#architecture">Architecture</a></li><li><a href="llm-gateway.html#layer-7-model-layer">Layer 7: Model Layer</a></li><li><a href="llm-gateway.html#llmops-architecture">LLMOps architecture</a></li><li><a href="llm-gateway.html#implementation-guide">Implementation guide</a></li><li><a href="llm-gateway.html#example-implementation">Example implementation</a></li><li><a href="llm-gateway.html#best-practices">Best practices</a></li></ul></li><li class="nav-item"><a class="nav-link" href="observability.html" style="--accent:#e07b00"><span class="nav-num">8</span>Observability &amp; Evaluation</a><button class="nav-toggle" aria-label="Toggle sections"></button><ul class="nav-sub"><li><a href="observability.html#overview">Overview</a></li><li><a href="observability.html#architecture">Architecture</a></li><li><a href="observability.html#implementation-guide">Implementation guide</a></li><li><a href="observability.html#example-implementation">Example implementation</a></li><li><a href="observability.html#best-practices">Best practices</a></li></ul></li><li class="nav-item"><a class="nav-link" href="security.html" style="--accent:#1a6fc4"><span class="nav-num">9</span>Security &amp; Governance</a><button class="nav-toggle" aria-label="Toggle sections"></button><ul class="nav-sub"><li><a href="security.html#overview">Overview</a></li><li><a href="security.html#architecture">Architecture</a></li><li><a href="security.html#security-threat-model">Security threat model</a></li><li><a href="security.html#implementation-guide">Implementation guide</a></li><li><a href="security.html#example-implementation">Example implementation</a></li><li><a href="security.html#best-practices">Best practices</a></li></ul></li><li class="nav-item"><a class="nav-link" href="deployment.html" style="--accent:#0b7a6c"><span class="nav-num">10</span>Deployment &amp; Operations</a><button class="nav-toggle" aria-label="Toggle sections"></button><ul class="nav-sub"><li><a href="deployment.html#overview">Overview</a></li><li><a href="deployment.html#layer-10-infrastructure">Layer 10: Infrastructure</a></li><li><a href="deployment.html#layer-11-devops-and-delivery-pipeline">Layer 11: DevOps and delivery pipeline</a></li><li><a href="deployment.html#performance-engineering">Performance engineering</a></li><li><a href="deployment.html#implementation-guide">Implementation guide</a></li><li><a href="deployment.html#example-implementation">Example implementation</a></li><li><a href="deployment.html#best-practices">Best practices</a></li></ul></li><li class="nav-item"><a class="nav-link" href="human-in-the-loop.html" style="--accent:#5b3fb5"><span class="nav-num">11</span>Human-in-the-Loop</a><button class="nav-toggle" aria-label="Toggle sections"></button><ul class="nav-sub"><li><a href="human-in-the-loop.html#overview">Overview</a></li><li><a href="human-in-the-loop.html#architecture">Architecture</a></li><li><a href="human-in-the-loop.html#domain-examples">Domain examples</a></li><li><a href="human-in-the-loop.html#implementation-guide">Implementation guide</a></li><li><a href="human-in-the-loop.html#example-implementation">Example implementation</a></li><li><a href="human-in-the-loop.html#best-practices">Best practices</a></li></ul></li><li class="nav-item"><a class="nav-link" href="reference-implementation.html" style="--accent:#0b7a6c"><span class="nav-num">12</span>Reference Implementation</a><button class="nav-toggle" aria-label="Toggle sections"></button><ul class="nav-sub"><li><a href="reference-implementation.html#reference-stack">Reference stack</a></li><li><a href="reference-implementation.html#end-to-end-use-case-enterprise-ai-research-assistant">End-to-end use case: Enterprise AI Research Assistant</a></li><li><a href="reference-implementation.html#production-challenges-and-solutions">Production challenges and solutions</a></li><li><a href="reference-implementation.html#technology-mapping">Technology mapping</a></li><li><a href="reference-implementation.html#implementation-roadmap">Implementation roadmap</a></li><li><a href="reference-implementation.html#production-deployment-checklist">Production deployment checklist</a></li><li><a href="reference-implementation.html#references">References</a></li></ul></li></ul>
+    <div class="sidebar-title">Downloads</div>
+    <ul class="nav nav-files">
+      <li><a href="Agentic-AI-Architecture-Design-Document.pdf">PDF whitepaper</a></li>
+      <li><a href="code-examples/agent_orchestrator.py">agent_orchestrator.py</a></li>
+      <li><a href="code-examples/memory_manager.py">memory_manager.py</a></li>
+      <li><a href="code-examples/tool_executor.py">tool_executor.py</a></li>
+      <li><a href="code-examples/llm_gateway.py">llm_gateway.py</a></li>
+      <li><a href="code-examples/guardrails.py">guardrails.py</a></li>
+      <li><a href="README.md">README.md</a></li>
+    </ul>
+  </nav>
+  <div class="scrim" id="scrim"></div>
+  <main class="content" id="content">
+    <div class="chapter-head">
+      <div class="crumbs"><a href="index.html">Documentation</a> <span>/</span> Chapter 5</div>
+      <h1><span class="ch-num">5</span>Tools &amp; Integrations Layer</h1>
+      <p class="summary">Layer 3: search engines, databases, APIs, enterprise systems, sandboxed code execution, file storage and messaging, and the Model Context Protocol.</p>
+    </div>
+    <article class="prose">
+<h2 id="overview"><span class="num">5.1</span> Overview</h2>
+<p>Layer 3 is where the agent touches the world. The diagram lists seven integration families: search engines, databases (SQL, NoSQL, vector), APIs and web services, enterprise systems (CRM, ERP, HRMS), a code execution environment, file storage and email/messaging/notifications.</p>
+<p>The layer's contract with the runtime is simple: every integration is exposed as a <strong>tool</strong> with a name, a description, a JSON Schema for arguments, a risk tier and an allow-list of agents. The action executor in Layer 2 is the only caller. Nothing in this layer is reachable from a prompt directly.</p>
+<h2 id="architecture"><span class="num">5.2</span> Architecture</h2>
+<p>Tools reach the runtime through one of three mechanisms:</p>
+<ol>
+<li><strong>Local tools</strong>: Python functions registered in-process (<code>@tool</code> decorator in <code>code-examples/tool_executor.py</code>). Best for thin wrappers and latency-sensitive calls.</li>
+<li><strong>MCP servers</strong>: out-of-process servers that publish tools over the Model Context Protocol. Best for reusable, independently deployed integrations.</li>
+<li><strong>Remote services</strong>: the sandbox and heavy integrations run as separate services called over HTTP/gRPC; they are wrapped as local tools or MCP servers.</li>
+</ol>
+<h3 id="search-engines"><span class="num">5.2.1</span> Search engines</h3>
+<ul>
+<li><strong>Web</strong>: Google Programmable Search / Vertex AI Search, Bing Web Search API, Brave Search API, Tavily and Exa (LLM-oriented, return cleaned content), SerpAPI.</li>
+<li><strong>Enterprise</strong>: Elasticsearch / OpenSearch, Azure AI Search, Glean-style connectors; the vector store's hybrid search.</li>
+<li>Return normalised results (<code>title</code>, <code>url</code>, <code>snippet</code>, <code>published</code>), cap at 5–10 per call and fetch page content in a second tool (<code>read_url</code>) with size limits and an HTML-to-text pass. Search output is a prime injection vector; sanitise it.</li>
+</ul>
+<h3 id="databases"><span class="num">5.2.2</span> Databases</h3>
+<ul>
+<li><strong>SQL</strong> (PostgreSQL, MySQL, SQL Server, Snowflake, BigQuery): expose <em>read-only</em> query tools with a dedicated database role, statement timeout, row limit and, preferably, a curated set of parameterised queries or views rather than free-form SQL. If text-to-SQL is required, validate the generated SQL (parser, allow-listed tables, no DDL/DML) and run it under a read-only role.</li>
+<li><strong>NoSQL</strong> (MongoDB, DynamoDB, Cosmos DB): same principle; expose query templates.</li>
+<li><strong>Vector databases</strong>: exposed as <code>retrieve_documents</code> with ACL filtering (see <a href="memory-system.html">Memory System</a>).</li>
+</ul>
+<h3 id="apis-and-web-services"><span class="num">5.2.3</span> APIs and web services</h3>
+<p>Any REST or GraphQL API can become a tool. Two approaches:</p>
+<ul>
+<li><strong>Hand-written wrappers</strong>: a function per operation with a tight schema and a good description. Highest quality; scales to dozens of tools.</li>
+<li><strong>Generated from OpenAPI</strong>: import the spec, generate one tool per operation, then prune. Fast; but generic descriptions and huge parameter schemas degrade tool selection. Curate.</li>
+</ul>
+<p>Function calling is the mechanism: the model returns <code>{"name": "...", "arguments": {...}}</code>; the executor validates and invokes. Prefer tools that do one thing with few arguments; the model selects among them far more reliably than among ten flags on one tool.</p>
+<h3 id="enterprise-systems"><span class="num">5.2.4</span> Enterprise systems</h3>
+<p>CRM (Salesforce, HubSpot, Dynamics), ERP (SAP, Oracle, NetSuite), HRMS (Workday, SuccessFactors), ITSM (ServiceNow, Jira). Considerations:</p>
+<ul>
+<li>Authenticate as the <strong>user</strong> (OAuth on-behalf-of, delegated tokens) so the system's own authorization applies; fall back to a service account with a policy layer only where delegation is impossible.</li>
+<li>Separate read tools from write tools; writes are <code>write</code> or <code>irreversible</code> risk tier and go through approval.</li>
+<li>Map enterprise identifiers explicitly (account IDs, employee IDs) rather than letting the model guess from names.</li>
+<li>Rate limits of the target system become tool-level concurrency limits.</li>
+</ul>
+<h3 id="code-execution-environment"><span class="num">5.2.5</span> Code execution environment</h3>
+<p>The Coder agent needs to run code; the Analyst needs calculations. Running model-generated code is the most dangerous capability in the system and must be isolated.</p>
+<figure class="table-figure"><figcaption><b>Table 5.1.</b> Sandbox isolation options</figcaption><div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Technology</th>
+<th>Isolation</th>
+<th>Start-up</th>
+<th>Fit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Docker container (plain)</td>
+<td>Namespace/cgroup; shares kernel</td>
+<td>~1 s</td>
+<td>Development only; kernel escape risk</td>
+</tr>
+<tr>
+<td>gVisor (runsc)</td>
+<td>User-space kernel</td>
+<td>~1 s</td>
+<td>Good default on Kubernetes (RuntimeClass)</td>
+</tr>
+<tr>
+<td>Kata Containers</td>
+<td>Lightweight VM per container</td>
+<td>1–3 s</td>
+<td>Strong isolation with container UX</td>
+</tr>
+<tr>
+<td>Firecracker microVM</td>
+<td>Minimal VM</td>
+<td>~150 ms</td>
+<td>Best isolation/latency trade-off; used by managed sandboxes (E2B, Modal)</td>
+</tr>
+<tr>
+<td>WebAssembly (Wasmtime, Pyodide)</td>
+<td>Language-level sandbox</td>
+<td>~ms</td>
+<td>Restricted languages/libraries; excellent for pure computation</td>
+</tr>
+<tr>
+<td>Managed sandbox services</td>
+<td>Provider-operated microVMs</td>
+<td>~200 ms</td>
+<td>Fastest path to production; data leaves your boundary</td>
+</tr>
+</tbody>
+</table></div></figure>
+<p>Baseline controls regardless of technology: no outbound network (or an egress allow-list), CPU/memory/time limits, read-only base image, ephemeral writable workspace, non-root user, seccomp profile, output size cap, one execution per sandbox instance (no reuse across users), and audit of every execution with its code.</p>
+<h3 id="file-storage"><span class="num">5.2.6</span> File storage</h3>
+<p>S3, Azure Blob Storage, Google Cloud Storage for uploads, generated artefacts (charts, reports, code) and ingestion sources. Tools: <code>read_file(path)</code>, <code>write_file(path, content)</code> scoped to a per-run or per-user prefix; presigned URLs (short TTL) to hand files to the frontend; server-side encryption with KMS keys; lifecycle rules for retention. Never give the agent a bucket-wide credential.</p>
+<h3 id="messaging-systems"><span class="num">5.2.7</span> Messaging systems</h3>
+<p>Email (SES, SendGrid, Microsoft Graph), Slack (Web API, Block Kit), Teams (Graph, Adaptive Cards), push and SMS (Twilio, FCM). These are <strong>write</strong> tools with real-world consequences: template the content where possible, require approval for external recipients, rate-limit per user, and record every send in the audit log with the approving identity.</p>
+<h2 id="model-context-protocol-mcp"><span class="num">5.3</span> Model Context Protocol (MCP)</h2>
+<p>MCP is an open protocol (JSON-RPC over stdio or HTTP) through which a server exposes <strong>tools</strong>, <strong>resources</strong> (readable data) and <strong>prompts</strong> to any compatible client. It matters for an enterprise architecture because it turns integrations into a product: one MCP server for Jira, built once, is usable by every agent, every framework and every vendor's client.</p>
+<h3 id="why-mcp-is-important"><span class="num">5.3.1</span> Why MCP is important</h3>
+<ul>
+<li><strong>Decoupling.</strong> Integrations are versioned and deployed independently of agents. A change to the CRM API touches one server.</li>
+<li><strong>Discovery.</strong> Clients call <code>tools/list</code> at start-up and receive names, descriptions and JSON Schemas; the registry populates itself.</li>
+<li><strong>Portability.</strong> The same server works with LangGraph, the OpenAI Agents SDK, Claude, IDEs and internal tools.</li>
+<li><strong>Ecosystem.</strong> Vendors and the community publish servers for GitHub, Slack, Postgres, Google Drive, filesystems and more; enterprises publish internal ones.</li>
+</ul>
+<h3 id="mcp-servers-in-this-architecture"><span class="num">5.3.2</span> MCP servers in this architecture</h3>
+<p>Each integration family in Layer 3 can be an MCP server: <code>mcp-search</code>, <code>mcp-postgres-ro</code>, <code>mcp-crm</code>, <code>mcp-sandbox</code>, <code>mcp-storage</code>, <code>mcp-messaging</code>. They run as Kubernetes deployments with their own identities and secrets. The tool executor discovers them and namespaces their tools (<code>crm__get_account</code>).</p>
+<h3 id="tool-discovery-and-permission-control"><span class="num">5.3.3</span> Tool discovery and permission control</h3>
+<p>Discovery is automatic; <strong>trust is not</strong>. The executor applies:</p>
+<ul>
+<li>An allow-list of MCP servers per environment (a new server does not become callable by being reachable).</li>
+<li>Risk-tier overrides per tool (<code>crm__update_opportunity</code> is <code>write</code> even if the server does not say so).</li>
+<li>Per-agent allow-lists and ABAC policy on arguments.</li>
+<li>Authentication to servers with per-server credentials and, where supported, the user's delegated token forwarded in the call context.</li>
+<li>Sanitisation of results: MCP tool results and resources are untrusted content.</li>
+</ul>
+<p>Governance-side, the diagram places "MCP / Tool Permissions" in Layer 9; the policy is owned there and enforced in the executor.</p>
+<h2 id="implementation-guide"><span class="num">5.4</span> Implementation guide</h2>
+<ul>
+<li>Start with a curated registry of 5–15 tools per agent; add more only with evaluation evidence.</li>
+<li>Write descriptions for the model, not for humans: what the tool returns, when to use it, when not to.</li>
+<li>Make argument schemas strict (<code>additionalProperties: false</code>, enums, max lengths).</li>
+<li>Assign a risk tier to every tool; treat unknown as <code>write</code>.</li>
+<li>Set timeouts per tool; agents wait synchronously and a hung tool stalls a run.</li>
+<li>Implement retries only for idempotent reads; a retried email is two emails.</li>
+<li>Add a circuit breaker per tool so a failing dependency degrades the agent instead of the platform.</li>
+<li>Log every call with arguments (masked), latency, result size and status.</li>
+</ul>
+<h2 id="example-implementation"><span class="num">5.5</span> Example implementation</h2>
+<p>Registering local tools and discovering an MCP server (from <code>code-examples/tool_executor.py</code>):</p>
+<div class="codehilite"><pre><span></span><code><span class="n">registry</span> <span class="o">=</span> <span class="n">build_registry</span><span class="p">()</span>                       <span class="c1"># web_search, run_code, send_email</span>
+<span class="n">crm</span> <span class="o">=</span> <span class="n">MCPServer</span><span class="p">(</span><span class="s2">&quot;crm&quot;</span><span class="p">,</span> <span class="s2">&quot;https://mcp-crm.internal&quot;</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="n">secrets</span><span class="p">[</span><span class="s2">&quot;MCP_CRM_TOKEN&quot;</span><span class="p">],</span>
+                <span class="n">default_risk</span><span class="o">=</span><span class="s2">&quot;read&quot;</span><span class="p">,</span> <span class="n">allowed_agents</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;researcher&quot;</span><span class="p">,</span> <span class="s2">&quot;analyst&quot;</span><span class="p">})</span>
+<span class="k">await</span> <span class="n">crm</span><span class="o">.</span><span class="n">discover</span><span class="p">(</span><span class="n">registry</span><span class="p">,</span> <span class="n">risk_overrides</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;update_opportunity&quot;</span><span class="p">:</span> <span class="s2">&quot;write&quot;</span><span class="p">})</span>
+<span class="n">executor</span> <span class="o">=</span> <span class="n">ToolExecutor</span><span class="p">(</span><span class="n">registry</span><span class="p">,</span> <span class="n">approvals</span><span class="o">=</span><span class="n">approval_service</span><span class="p">,</span> <span class="n">audit</span><span class="o">=</span><span class="n">audit_log</span><span class="p">,</span> <span class="n">policy</span><span class="o">=</span><span class="n">opa_policy</span><span class="p">)</span>
+</code></pre></div>
+
+<p>A minimal MCP server (Python SDK):</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">mcp.server.fastmcp</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastMCP</span>
+<span class="n">mcp</span> <span class="o">=</span> <span class="n">FastMCP</span><span class="p">(</span><span class="s2">&quot;crm&quot;</span><span class="p">)</span>
+
+<span class="nd">@mcp</span><span class="o">.</span><span class="n">tool</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_account</span><span class="p">(</span><span class="n">account_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the CRM account record (name, tier, ARR, owner) for a given account ID.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">crm_client</span><span class="o">.</span><span class="n">accounts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">account_id</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">mcp</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">transport</span><span class="o">=</span><span class="s2">&quot;streamable-http&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Sandbox execution request:</p>
+<div class="codehilite"><pre><span></span><code><span class="err">POST</span><span class="w"> </span><span class="err">/execu</span><span class="kc">te</span>
+<span class="p">{</span><span class="w"> </span><span class="nt">&quot;language&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;python&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;code&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;import pandas as pd; ...&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;limits&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;cpu_s&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;memory_mb&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">512</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;network&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;disk_mb&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;files&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;competitors.csv&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;s3://.../presigned&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+
+<h2 id="best-practices"><span class="num">5.6</span> Best practices</h2>
+<ul>
+<li><strong>Common mistakes.</strong> Free-form SQL with a privileged role; agents holding long-lived API keys; tool output pasted into the prompt unbounded; one tool with twenty optional parameters; sandboxes with network access; retrying writes.</li>
+<li><strong>Optimisation.</strong> Return compact, structured results; paginate; pre-filter server-side; cache read tools with short TTLs; run independent tool calls concurrently.</li>
+<li><strong>Security.</strong> Least privilege per tool, per agent, per user; delegated identity where possible; approval for writes; sanitise and bound all results; audit everything; treat every MCP server as a third-party dependency with review, pinning and network policy.</li>
+</ul>
+    </article>
+    <nav class="pagernav"><a class="pager prev" href="memory-system.html"><span>Previous</span>Memory System</a><a class="pager next" href="guardrails.html"><span>Next</span>Guardrails</a></nav>
+    <footer class="foot">Design and Implementation of a Production-Grade Agentic AI Application Architecture · Version 1.0 · 26 September 2026</footer>
+  </main>
+  <aside class="rail" aria-label="On this page">
+    <div class="rail-title">On this page</div>
+    <ul class="toc"><li class="l2"><a href="#overview">Overview</a></li><li class="l2"><a href="#architecture">Architecture</a></li><li class="l3"><a href="#search-engines">Search engines</a></li><li class="l3"><a href="#databases">Databases</a></li><li class="l3"><a href="#apis-and-web-services">APIs and web services</a></li><li class="l3"><a href="#enterprise-systems">Enterprise systems</a></li><li class="l3"><a href="#code-execution-environment">Code execution environment</a></li><li class="l3"><a href="#file-storage">File storage</a></li><li class="l3"><a href="#messaging-systems">Messaging systems</a></li><li class="l2"><a href="#model-context-protocol-mcp">Model Context Protocol (MCP)</a></li><li class="l3"><a href="#why-mcp-is-important">Why MCP is important</a></li><li class="l3"><a href="#mcp-servers-in-this-architecture">MCP servers in this architecture</a></li><li class="l3"><a href="#tool-discovery-and-permission-control">Tool discovery and permission control</a></li><li class="l2"><a href="#implementation-guide">Implementation guide</a></li><li class="l2"><a href="#example-implementation">Example implementation</a></li><li class="l2"><a href="#best-practices">Best practices</a></li></ul>
+  </aside>
+</div>
+<script src="assets/search-index.js"></script>
+<script src="assets/site.js"></script>
+</body>
+</html>

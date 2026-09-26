@@ -1,0 +1,17 @@
+flowchart LR
+    subgraph SRC["Instrumented services"]
+        API[API]
+        RT[Agent runtime]
+        GW[LLM gateway]
+        TL[Tool executor]
+    end
+    SRC -->|OTLP| COL[OpenTelemetry Collector]
+    COL --> TR[Traces<br/>Tempo / Jaeger / LangSmith / Phoenix]
+    COL --> MT[Metrics<br/>Prometheus]
+    COL --> LG[Logs<br/>Loki / Elasticsearch]
+    TR --> EV[Evaluation pipeline<br/>offline + online evals]
+    EV --> DS[(Datasets & annotations)]
+    MT --> DB[Grafana dashboards]
+    MT --> AL[Alertmanager<br/>SLO burn-rate alerts]
+    LG --> AUD[(Audit log store<br/>WORM)]
+    DS --> HF[Human feedback UI]

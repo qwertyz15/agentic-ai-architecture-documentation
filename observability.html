@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Observability &amp; Evaluation · Agentic AI Application Architecture</title>
+<meta name="description" content="Layer 8: logging, tracing, metrics and monitoring, offline and online evaluation, dashboards and alerts for agentic systems.">
+<link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+<script>(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}if(t!=='dark'&&t!=='light')t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);try{if(localStorage.getItem('sidebar')==='collapsed')document.documentElement.setAttribute('data-sidebar','collapsed')}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body style="--accent:#e07b00">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn" aria-label="Toggle navigation" title="Toggle sidebar" aria-controls="sidebar" aria-expanded="false"><span></span><span></span><span></span></button>
+  <a class="brand" href="index.html"><img src="assets/icons/logo.svg" alt="" width="28" height="28">Agentic AI Application Architecture</a>
+  <div class="search" id="search">
+    <input type="search" id="searchInput" placeholder="Search documentation…" autocomplete="off" aria-label="Search documentation">
+    <kbd>/</kbd>
+    <div class="search-results" id="searchResults" role="listbox" hidden></div>
+  </div>
+  <span class="version">v1.0</span>
+<button class="theme-btn" id="themeBtn" type="button" aria-label="Switch to dark mode" title="Toggle dark mode"><svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+</header>
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="Documentation">
+    <div class="sidebar-title">Design document</div>
+    <ul class="nav"><li class="nav-item"><a class="nav-link" href="index.html" style="--accent:#5b3fb5"><span class="nav-num">1</span>Introduction</a><button class="nav-toggle" aria-label="Toggle sections"></button><ul class="nav-sub"><li><a href="index.html#what-this-document-is">What this document is</a></li><li><a href="index.html#what-agentic-ai-is">What Agentic AI is</a></li><li><a href="index.html#three-generations-of-llm-applications">Three generations of LLM applications</a></li><li><a href="index.html#why-an-agent-based-architecture-is-required">Why an agent-based architecture is required</a></li><li><a href="index.html#characteristics-of-a-production-grade-agentic-system">Characteristics of a production-grade agentic system</a></li><li><a href="index.html#the-reference-architecture-at-a-glance">The reference architecture at a glance</a></li><li><a href="index.html#how-to-read-this-documentation">How to read this documentation</a></li></ul></li><li class="nav-item"><a class="nav-link" href="architecture-overview.html" style="--accent:#1d5fd1"><span class="nav-num">2</span>Architecture Overview</a><button class="nav-toggle" aria-label="Toggle sections"></button><ul class="nav-sub"><li><a href="architecture-overview.html#overview">Overview</a></li><li><a href="architecture-overview.html#the-request-lifecycle">The request lifecycle</a></li><li><a href="architecture-overview.html#the-four-flows">The four flows</a></li><li><a href="architecture-overview.html#layer-1-users-channels">Layer 1: Users &amp;amp; Channels</a></li><li><a href="architecture-overview.html#request-handling-layer-2-ingress-block">Request Handling (Layer 2, ingress block)</a></li><li><a href="architecture-overview.html#agentic-design-patterns">Agentic design patterns</a></li><li><a href="architecture-overview.html#best-practices">Best practices</a></li></ul></li><li class="nav-item"><a class="nav-link" href="agent-runtime.html" style="--accent:#1d5fd1"><span class="nav-num">3</span>Agent Runtime</a><button class="nav-toggle" aria-label="Toggle sections"></button><ul class="nav-sub"><li><a href="agent-runtime.html#overview">Overview</a></li><li><a href="agent-runtime.html#architecture">Architecture</a></li><li><a href="agent-runtime.html#implementation-guide">Implementation guide</a></li><li><a href="agent-runtime.html#example-implementation">Example implementation</a></li><li><a href="agent-runtime.html#best-practices">Best practices</a></li></ul></li><li class="nav-item"><a class="nav-link" href="memory-system.html" style="--accent:#5b3fb5"><span class="nav-num">4</span>Memory System</a><button class="nav-toggle" aria-label="Toggle sections"></button><ul class="nav-sub"><li><a href="memory-system.html#overview">Overview</a></li><li><a href="memory-system.html#architecture">Architecture</a></li><li><a href="memory-system.html#rag-architecture-integration">RAG architecture integration</a></li><li><a href="memory-system.html#agent-memory-engineering">Agent memory engineering</a></li><li><a href="memory-system.html#implementation-guide">Implementation guide</a></li><li><a href="memory-system.html#example-implementation">Example implementation</a></li><li><a href="memory-system.html#best-practices">Best practices</a></li></ul></li><li class="nav-item"><a class="nav-link" href="tools-integrations.html" style="--accent:#d6501b"><span class="nav-num">5</span>Tools &amp; Integrations</a><button class="nav-toggle" aria-label="Toggle sections"></button><ul class="nav-sub"><li><a href="tools-integrations.html#overview">Overview</a></li><li><a href="tools-integrations.html#architecture">Architecture</a></li><li><a href="tools-integrations.html#model-context-protocol-mcp">Model Context Protocol (MCP)</a></li><li><a href="tools-integrations.html#implementation-guide">Implementation guide</a></li><li><a href="tools-integrations.html#example-implementation">Example implementation</a></li><li><a href="tools-integrations.html#best-practices">Best practices</a></li></ul></li><li class="nav-item"><a class="nav-link" href="guardrails.html" style="--accent:#c8102e"><span class="nav-num">6</span>Guardrails</a><button class="nav-toggle" aria-label="Toggle sections"></button><ul class="nav-sub"><li><a href="guardrails.html#overview">Overview</a></li><li><a href="guardrails.html#architecture">Architecture</a></li><li><a href="guardrails.html#implementation-guide">Implementation guide</a></li><li><a href="guardrails.html#example-implementation">Example implementation</a></li><li><a href="guardrails.html#best-practices">Best practices</a></li></ul></li><li class="nav-item"><a class="nav-link" href="llm-gateway.html" style="--accent:#0f8a3c"><span class="nav-num">7</span>LLM Gateway &amp; Models</a><button class="nav-toggle" aria-label="Toggle sections"></button><ul class="nav-sub"><li><a href="llm-gateway.html#overview">Overview</a></li><li><a href="llm-gateway.html#architecture">Architecture</a></li><li><a href="llm-gateway.html#layer-7-model-layer">Layer 7: Model Layer</a></li><li><a href="llm-gateway.html#llmops-architecture">LLMOps architecture</a></li><li><a href="llm-gateway.html#implementation-guide">Implementation guide</a></li><li><a href="llm-gateway.html#example-implementation">Example implementation</a></li><li><a href="llm-gateway.html#best-practices">Best practices</a></li></ul></li><li class="nav-item active"><a class="nav-link" href="observability.html" style="--accent:#e07b00"><span class="nav-num">8</span>Observability &amp; Evaluation</a><button class="nav-toggle" aria-label="Toggle sections"></button><ul class="nav-sub"><li><a href="observability.html#overview">Overview</a></li><li><a href="observability.html#architecture">Architecture</a></li><li><a href="observability.html#implementation-guide">Implementation guide</a></li><li><a href="observability.html#example-implementation">Example implementation</a></li><li><a href="observability.html#best-practices">Best practices</a></li></ul></li><li class="nav-item"><a class="nav-link" href="security.html" style="--accent:#1a6fc4"><span class="nav-num">9</span>Security &amp; Governance</a><button class="nav-toggle" aria-label="Toggle sections"></button><ul class="nav-sub"><li><a href="security.html#overview">Overview</a></li><li><a href="security.html#architecture">Architecture</a></li><li><a href="security.html#security-threat-model">Security threat model</a></li><li><a href="security.html#implementation-guide">Implementation guide</a></li><li><a href="security.html#example-implementation">Example implementation</a></li><li><a href="security.html#best-practices">Best practices</a></li></ul></li><li class="nav-item"><a class="nav-link" href="deployment.html" style="--accent:#0b7a6c"><span class="nav-num">10</span>Deployment &amp; Operations</a><button class="nav-toggle" aria-label="Toggle sections"></button><ul class="nav-sub"><li><a href="deployment.html#overview">Overview</a></li><li><a href="deployment.html#layer-10-infrastructure">Layer 10: Infrastructure</a></li><li><a href="deployment.html#layer-11-devops-and-delivery-pipeline">Layer 11: DevOps and delivery pipeline</a></li><li><a href="deployment.html#performance-engineering">Performance engineering</a></li><li><a href="deployment.html#implementation-guide">Implementation guide</a></li><li><a href="deployment.html#example-implementation">Example implementation</a></li><li><a href="deployment.html#best-practices">Best practices</a></li></ul></li><li class="nav-item"><a class="nav-link" href="human-in-the-loop.html" style="--accent:#5b3fb5"><span class="nav-num">11</span>Human-in-the-Loop</a><button class="nav-toggle" aria-label="Toggle sections"></button><ul class="nav-sub"><li><a href="human-in-the-loop.html#overview">Overview</a></li><li><a href="human-in-the-loop.html#architecture">Architecture</a></li><li><a href="human-in-the-loop.html#domain-examples">Domain examples</a></li><li><a href="human-in-the-loop.html#implementation-guide">Implementation guide</a></li><li><a href="human-in-the-loop.html#example-implementation">Example implementation</a></li><li><a href="human-in-the-loop.html#best-practices">Best practices</a></li></ul></li><li class="nav-item"><a class="nav-link" href="reference-implementation.html" style="--accent:#0b7a6c"><span class="nav-num">12</span>Reference Implementation</a><button class="nav-toggle" aria-label="Toggle sections"></button><ul class="nav-sub"><li><a href="reference-implementation.html#reference-stack">Reference stack</a></li><li><a href="reference-implementation.html#end-to-end-use-case-enterprise-ai-research-assistant">End-to-end use case: Enterprise AI Research Assistant</a></li><li><a href="reference-implementation.html#production-challenges-and-solutions">Production challenges and solutions</a></li><li><a href="reference-implementation.html#technology-mapping">Technology mapping</a></li><li><a href="reference-implementation.html#implementation-roadmap">Implementation roadmap</a></li><li><a href="reference-implementation.html#production-deployment-checklist">Production deployment checklist</a></li><li><a href="reference-implementation.html#references">References</a></li></ul></li></ul>
+    <div class="sidebar-title">Downloads</div>
+    <ul class="nav nav-files">
+      <li><a href="Agentic-AI-Architecture-Design-Document.pdf">PDF whitepaper</a></li>
+      <li><a href="code-examples/agent_orchestrator.py">agent_orchestrator.py</a></li>
+      <li><a href="code-examples/memory_manager.py">memory_manager.py</a></li>
+      <li><a href="code-examples/tool_executor.py">tool_executor.py</a></li>
+      <li><a href="code-examples/llm_gateway.py">llm_gateway.py</a></li>
+      <li><a href="code-examples/guardrails.py">guardrails.py</a></li>
+      <li><a href="README.md">README.md</a></li>
+    </ul>
+  </nav>
+  <div class="scrim" id="scrim"></div>
+  <main class="content" id="content">
+    <div class="chapter-head">
+      <div class="crumbs"><a href="index.html">Documentation</a> <span>/</span> Chapter 8</div>
+      <h1><span class="ch-num">8</span>Observability &amp; Evaluation Layer</h1>
+      <p class="summary">Layer 8: logging, tracing, metrics and monitoring, offline and online evaluation, dashboards and alerts for agentic systems.</p>
+    </div>
+    <article class="prose">
+<h2 id="overview"><span class="num">8.1</span> Overview</h2>
+<p>Agentic systems fail in ways that are invisible without instrumentation: a planner that quietly produces worse plans after a model update, a sub-agent that loops five times before giving up, a tool that returns injected instructions, a cost that doubles because a prompt lost its cache prefix. Layer 8 makes every run reconstructible and every quality dimension measurable. The diagram lists five blocks: logging, tracing, metrics and monitoring, evaluation, and dashboards and alerts.</p>
+<p>Two goals: <strong>operate</strong> the system (is it up, fast, within budget?) and <strong>improve</strong> it (is it correct, safe, useful, and getting better?). Traditional observability covers the first; evaluation covers the second.</p>
+<h2 id="architecture"><span class="num">8.2</span> Architecture</h2>
+<figure class="figure diagram" id="fig-observability-flow"><div class="diagram-scroll"><img src="assets/diagrams/observability-flow.svg" alt="Telemetry pipeline from instrumented services to traces, metrics, logs, evaluation and dashboards"></div><figcaption><b>Figure 8.1.</b> Telemetry pipeline from instrumented services to traces, metrics, logs, evaluation and dashboards</figcaption><details class="mmd"><summary>Mermaid source <code>diagrams/observability-flow.mmd</code></summary><pre><code>flowchart LR
+    subgraph SRC[&quot;Instrumented services&quot;]
+        API[API]
+        RT[Agent runtime]
+        GW[LLM gateway]
+        TL[Tool executor]
+    end
+    SRC --&gt;|OTLP| COL[OpenTelemetry Collector]
+    COL --&gt; TR[Traces&lt;br/&gt;Tempo / Jaeger / LangSmith / Phoenix]
+    COL --&gt; MT[Metrics&lt;br/&gt;Prometheus]
+    COL --&gt; LG[Logs&lt;br/&gt;Loki / Elasticsearch]
+    TR --&gt; EV[Evaluation pipeline&lt;br/&gt;offline + online evals]
+    EV --&gt; DS[(Datasets &amp; annotations)]
+    MT --&gt; DB[Grafana dashboards]
+    MT --&gt; AL[Alertmanager&lt;br/&gt;SLO burn-rate alerts]
+    LG --&gt; AUD[(Audit log store&lt;br/&gt;WORM)]
+    DS --&gt; HF[Human feedback UI]
+</code></pre></details></figure>
+<h3 id="logging"><span class="num">8.2.1</span> Logging</h3>
+<p>Structured JSON logs from every service with correlation IDs (<code>trace_id</code>, <code>run_id</code>, <code>session_id</code>, <code>tenant_id</code>).</p>
+<ul>
+<li><strong>Requests</strong>: endpoint, principal, channel, validation result, guardrail verdicts.</li>
+<li><strong>Responses</strong>: status, length, latency, final guardrail verdicts, delivery channel.</li>
+<li><strong>Errors</strong>: exceptions with stack traces, provider errors, tool failures, budget exhaustion.</li>
+<li><strong>Audit logs</strong>: security-relevant events (auth decisions, tool permission decisions, approvals, data access) written to an append-only, tamper-evident store (WORM object storage, a dedicated audit table with hash chaining) with long retention. Audit logs are a governance artefact (Layer 9) and must never contain secrets; PII is masked according to classification.</li>
+</ul>
+<p>Prompt and completion content logging is a policy decision: full content for debugging in non-production, hashed or sampled with masking in production, full content only with tenant consent and encryption.</p>
+<h3 id="tracing"><span class="num">8.2.2</span> Tracing</h3>
+<p>A run is a tree of spans: run → plan → task → agent step → model call / tool call → guardrail check. OpenTelemetry is the substrate: instrument the orchestrator, executor, gateway and guardrails with spans carrying the GenAI semantic conventions (<code>gen_ai.system</code>, <code>gen_ai.request.model</code>, <code>gen_ai.usage.input_tokens</code>, <code>gen_ai.usage.output_tokens</code>, tool name, arguments hash, result size).</p>
+<ul>
+<li><strong>Request traces</strong>: the whole run, end to end, including queue wait time.</li>
+<li><strong>Agent steps</strong>: each thought/action/observation with the prompt version and model.</li>
+<li><strong>Tool calls</strong>: name, latency, status, retries, breaker state.</li>
+<li><strong>Latency</strong>: broken down by model, tool, guardrail and queueing so slowness is attributable.</li>
+</ul>
+<figure class="table-figure"><figcaption><b>Table 8.1.</b> Tracing and LLM observability tools</figcaption><div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Type</th>
+<th>Strengths</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OpenTelemetry</td>
+<td>Standard + SDKs + Collector</td>
+<td>Vendor-neutral; one pipeline for traces, metrics, logs; GenAI semantic conventions</td>
+</tr>
+<tr>
+<td>LangSmith</td>
+<td>LLM observability + evaluation platform</td>
+<td>Deep LangGraph integration, datasets, annotation queues, prompt hub</td>
+</tr>
+<tr>
+<td>Arize Phoenix</td>
+<td>Open-source LLM tracing and evals</td>
+<td>OTel-native, runs locally or self-hosted, evaluation templates</td>
+</tr>
+<tr>
+<td>Langfuse</td>
+<td>Open-source LLM observability</td>
+<td>Self-hostable, prompt management, scores, cost tracking</td>
+</tr>
+<tr>
+<td>Grafana Tempo / Jaeger</td>
+<td>Distributed tracing backends</td>
+<td>General-purpose, integrates with Grafana</td>
+</tr>
+<tr>
+<td>Datadog / Honeycomb / New Relic</td>
+<td>Commercial APM with LLM features</td>
+<td>Unified infra + LLM monitoring</td>
+</tr>
+</tbody>
+</table></div></figure>
+<h3 id="metrics-and-monitoring"><span class="num">8.2.3</span> Metrics and monitoring</h3>
+<p>Emit as Prometheus metrics or OTel metrics with labels (tenant, agent, model, tool, task_class):</p>
+<ul>
+<li><strong>Token usage</strong>: input, output, cached tokens per model.</li>
+<li><strong>Throughput</strong>: runs started/completed per minute, steps per run, tool calls per run.</li>
+<li><strong>Cost tracking</strong>: cost per run, per tenant, per agent, per model; budget consumption.</li>
+<li><strong>Success rate</strong>: runs completed vs failed vs cancelled vs budget-exhausted; task acceptance rate from reflection; tool success rate.</li>
+<li><strong>Latency</strong>: p50/p95/p99 for run, first token, model call, tool call, guardrail; queue wait.</li>
+<li><strong>User feedback</strong>: thumbs up/down, edit rate, escalation rate.</li>
+</ul>
+<p>Define SLOs: for example, 95 % of interactive runs return first token within 3 s; 99 % of runs finish within 5 minutes; cost per run under a target; guardrail block rate within a band. Alert on burn rate, not on single thresholds.</p>
+<h3 id="evaluation"><span class="num">8.2.4</span> Evaluation</h3>
+<p>Evaluation answers whether the system is <em>good</em>, not just <em>up</em>.</p>
+<p><strong>Offline evaluation.</strong> A curated dataset of inputs with expected outputs or rubrics, run against the full pipeline (or individual components) on every change. Includes golden answers, tool-call expectations (did the agent call the right tool with the right arguments?), plan quality rubrics, RAG metrics and safety test cases. Runs in CI; regressions block promotion.</p>
+<p><strong>Online evaluation.</strong> Sampled production runs scored by LLM judges (faithfulness, relevance, tone), by heuristics (loops, budget exhaustion, refusal rate) and by user feedback. Trends feed dashboards; low scores feed annotation queues.</p>
+<p><strong>A/B and shadow tests.</strong> Route a fraction of traffic to a new prompt or model (A/B) or run the candidate in parallel without serving its output (shadow) and compare scores, latency and cost.</p>
+<p><strong>Human feedback.</strong> Explicit ratings, corrections, approvals and rejections from Layer 12 become labelled data; annotation queues let reviewers score sampled runs against rubrics.</p>
+<p><strong>Regression testing.</strong> Fixed suites for safety (jailbreak corpus), tool contracts (schema compatibility) and end-to-end scenarios, run against every prompt, model, tool or guardrail change.</p>
+<figure class="table-figure"><figcaption><b>Table 8.2.</b> Core evaluation metrics</figcaption><div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Measures</th>
+<th>Method</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Faithfulness (RAGAS)</td>
+<td>Whether the answer's claims are supported by retrieved context</td>
+<td>LLM judge decomposes claims and checks each</td>
+</tr>
+<tr>
+<td>Answer relevance (RAGAS)</td>
+<td>Whether the answer addresses the question</td>
+<td>Judge generates questions from the answer, compares embeddings</td>
+</tr>
+<tr>
+<td>Context precision / recall (RAGAS)</td>
+<td>Retrieval quality</td>
+<td>Compare retrieved chunks to ground truth</td>
+</tr>
+<tr>
+<td>Hallucination rate</td>
+<td>Share of answers with unsupported claims</td>
+<td>Judge or NLI; complements faithfulness</td>
+</tr>
+<tr>
+<td>Task success rate</td>
+<td>Whether the objective was achieved</td>
+<td>Rubric per scenario; human or judge</td>
+</tr>
+<tr>
+<td>Tool-call accuracy</td>
+<td>Right tool, right arguments</td>
+<td>Exact/semantic match against expectations</td>
+</tr>
+<tr>
+<td>Plan quality</td>
+<td>Completeness, minimality, correct dependencies</td>
+<td>Rubric-scored</td>
+</tr>
+<tr>
+<td>Safety pass rate</td>
+<td>Share of adversarial prompts correctly handled</td>
+<td>Adversarial suite</td>
+</tr>
+<tr>
+<td>Cost and latency per task</td>
+<td>Efficiency</td>
+<td>From telemetry</td>
+</tr>
+</tbody>
+</table></div></figure>
+<p>Frameworks: RAGAS, DeepEval, LangSmith evaluators, Phoenix evals, promptfoo, OpenAI Evals, Inspect. LLM judges must themselves be evaluated against human labels on a sample; use a different model from the one being judged.</p>
+<h3 id="dashboards-and-alerts"><span class="num">8.2.5</span> Dashboards and alerts</h3>
+<ul>
+<li><strong>Real-time dashboards</strong>: run volume, success/failure, latency percentiles, tokens and cost by tenant and model, guardrail verdicts, tool health, queue depth, GPU utilisation for self-hosted models.</li>
+<li><strong>Quality dashboards</strong>: evaluation scores over time by prompt version and model version, feedback trends, annotation throughput.</li>
+<li><strong>Alerts and notifications</strong>: provider error spikes, failover activation, cost anomaly (&gt; 2× baseline), loop rate increase, guardrail block rate change, SLO burn rate, evaluation regression after deploy.</li>
+<li><strong>SLO/SLA monitoring</strong>: error budgets per tenant tier; reports to stakeholders.</li>
+</ul>
+<h2 id="implementation-guide"><span class="num">8.3</span> Implementation guide</h2>
+<ul>
+<li>Instrument with OpenTelemetry from the first commit; add LLM-specific attributes; export to an OTel Collector that fans out to tracing, metrics and logs backends.</li>
+<li>Propagate context across the queue: inject trace context into the job payload and extract it in the worker.</li>
+<li>Record prompt and model versions on every span; without them, quality regressions cannot be attributed.</li>
+<li>Keep evaluation datasets in version control (or a dataset registry) with provenance; grow them from production failures.</li>
+<li>Build the annotation queue early; human labels are the scarce resource.</li>
+<li>Separate operational telemetry retention (weeks) from audit retention (years).</li>
+</ul>
+<h2 id="example-implementation"><span class="num">8.4</span> Example implementation</h2>
+<p>OpenTelemetry instrumentation of a model call:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">opentelemetry</span><span class="w"> </span><span class="kn">import</span> <span class="n">trace</span>
+<span class="n">tracer</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">get_tracer</span><span class="p">(</span><span class="s2">&quot;agent-runtime&quot;</span><span class="p">)</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">traced_complete</span><span class="p">(</span><span class="n">gateway</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">tracer</span><span class="o">.</span><span class="n">start_as_current_span</span><span class="p">(</span><span class="s2">&quot;gen_ai.chat&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">span</span><span class="p">:</span>
+        <span class="n">span</span><span class="o">.</span><span class="n">set_attribute</span><span class="p">(</span><span class="s2">&quot;gen_ai.request.model_class&quot;</span><span class="p">,</span> <span class="n">kw</span><span class="p">[</span><span class="s2">&quot;task_class&quot;</span><span class="p">])</span>
+        <span class="n">span</span><span class="o">.</span><span class="n">set_attribute</span><span class="p">(</span><span class="s2">&quot;agent.prompt_version&quot;</span><span class="p">,</span> <span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;prompt_version&quot;</span><span class="p">,</span> <span class="s2">&quot;n/a&quot;</span><span class="p">))</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="k">await</span> <span class="n">gateway</span><span class="o">.</span><span class="n">complete</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+        <span class="n">span</span><span class="o">.</span><span class="n">set_attribute</span><span class="p">(</span><span class="s2">&quot;gen_ai.response.model&quot;</span><span class="p">,</span> <span class="n">resp</span><span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">])</span>
+        <span class="n">span</span><span class="o">.</span><span class="n">set_attribute</span><span class="p">(</span><span class="s2">&quot;gen_ai.usage.input_tokens&quot;</span><span class="p">,</span> <span class="n">resp</span><span class="p">[</span><span class="s2">&quot;usage&quot;</span><span class="p">][</span><span class="s2">&quot;prompt_tokens&quot;</span><span class="p">])</span>
+        <span class="n">span</span><span class="o">.</span><span class="n">set_attribute</span><span class="p">(</span><span class="s2">&quot;gen_ai.usage.output_tokens&quot;</span><span class="p">,</span> <span class="n">resp</span><span class="p">[</span><span class="s2">&quot;usage&quot;</span><span class="p">][</span><span class="s2">&quot;completion_tokens&quot;</span><span class="p">])</span>
+        <span class="n">span</span><span class="o">.</span><span class="n">set_attribute</span><span class="p">(</span><span class="s2">&quot;gen_ai.cost_usd&quot;</span><span class="p">,</span> <span class="n">resp</span><span class="p">[</span><span class="s2">&quot;cost_usd&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">resp</span>
+</code></pre></div>
+
+<p>Prometheus metric definitions:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">RUN_DURATION</span> <span class="o">=</span> <span class="n">Histogram</span><span class="p">(</span><span class="s2">&quot;agent_run_duration_seconds&quot;</span><span class="p">,</span> <span class="s2">&quot;Run duration&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;tenant&quot;</span><span class="p">,</span> <span class="s2">&quot;status&quot;</span><span class="p">],</span>
+                         <span class="n">buckets</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">600</span><span class="p">))</span>
+<span class="n">TOKENS</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="s2">&quot;llm_tokens_total&quot;</span><span class="p">,</span> <span class="s2">&quot;Tokens&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;tenant&quot;</span><span class="p">,</span> <span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;direction&quot;</span><span class="p">])</span>
+<span class="n">COST</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="s2">&quot;llm_cost_usd_total&quot;</span><span class="p">,</span> <span class="s2">&quot;Cost&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;tenant&quot;</span><span class="p">,</span> <span class="s2">&quot;model&quot;</span><span class="p">])</span>
+<span class="n">TOOL_CALLS</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="s2">&quot;tool_calls_total&quot;</span><span class="p">,</span> <span class="s2">&quot;Tool calls&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;tool&quot;</span><span class="p">,</span> <span class="s2">&quot;status&quot;</span><span class="p">])</span>
+<span class="n">GUARDRAIL</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="s2">&quot;guardrail_verdicts_total&quot;</span><span class="p">,</span> <span class="s2">&quot;Verdicts&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;pipeline&quot;</span><span class="p">,</span> <span class="s2">&quot;check&quot;</span><span class="p">,</span> <span class="s2">&quot;action&quot;</span><span class="p">])</span>
+</code></pre></div>
+
+<p>RAGAS offline evaluation:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">ragas</span><span class="w"> </span><span class="kn">import</span> <span class="n">evaluate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ragas.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">faithfulness</span><span class="p">,</span> <span class="n">answer_relevancy</span><span class="p">,</span> <span class="n">context_precision</span><span class="p">,</span> <span class="n">context_recall</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="n">faithfulness</span><span class="p">,</span> <span class="n">answer_relevancy</span><span class="p">,</span> <span class="n">context_precision</span><span class="p">,</span> <span class="n">context_recall</span><span class="p">])</span>
+<span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;faithfulness&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.85</span><span class="p">,</span> <span class="s2">&quot;faithfulness regression - blocking promotion&quot;</span>
+</code></pre></div>
+
+<p>Alert rule (Prometheus):</p>
+<div class="codehilite"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">alert</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AgentCostAnomaly</span>
+<span class="w">  </span><span class="nt">expr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sum(rate(llm_cost_usd_total[1h])) &gt; 2 * sum(rate(llm_cost_usd_total[1h] offset 1d))</span>
+<span class="w">  </span><span class="nt">for</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30m</span>
+<span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> severity</span><span class="p">:</span><span class="w"> </span><span class="nv">warning</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</code></pre></div>
+
+<h2 id="best-practices"><span class="num">8.5</span> Best practices</h2>
+<ul>
+<li><strong>Common mistakes.</strong> Logging prompts with secrets; traces without prompt/model versions; metrics without tenant labels; evaluation only at launch; LLM judges never validated against humans; alerting on averages.</li>
+<li><strong>Optimisation.</strong> Sample traces at 100 % for failures and a fraction for successes; aggregate token metrics at the gateway; pre-compute cost per run at run end.</li>
+<li><strong>Security.</strong> Mask PII in telemetry; restrict access to trace content; audit log to WORM storage; retention aligned with governance policy.</li>
+</ul>
+    </article>
+    <nav class="pagernav"><a class="pager prev" href="llm-gateway.html"><span>Previous</span>LLM Gateway &amp; Models</a><a class="pager next" href="security.html"><span>Next</span>Security &amp; Governance</a></nav>
+    <footer class="foot">Design and Implementation of a Production-Grade Agentic AI Application Architecture · Version 1.0 · 26 September 2026</footer>
+  </main>
+  <aside class="rail" aria-label="On this page">
+    <div class="rail-title">On this page</div>
+    <ul class="toc"><li class="l2"><a href="#overview">Overview</a></li><li class="l2"><a href="#architecture">Architecture</a></li><li class="l3"><a href="#logging">Logging</a></li><li class="l3"><a href="#tracing">Tracing</a></li><li class="l3"><a href="#metrics-and-monitoring">Metrics and monitoring</a></li><li class="l3"><a href="#evaluation">Evaluation</a></li><li class="l3"><a href="#dashboards-and-alerts">Dashboards and alerts</a></li><li class="l2"><a href="#implementation-guide">Implementation guide</a></li><li class="l2"><a href="#example-implementation">Example implementation</a></li><li class="l2"><a href="#best-practices">Best practices</a></li></ul>
+  </aside>
+</div>
+<script src="assets/search-index.js"></script>
+<script src="assets/site.js"></script>
+</body>
+</html>

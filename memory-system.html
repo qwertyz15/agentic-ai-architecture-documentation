@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Memory System · Agentic AI Application Architecture</title>
+<meta name="description" content="Layer 4: short-term and long-term memory, vector store and knowledge graph; RAG integration; memory engineering, compression and context management.">
+<link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+<script>(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}if(t!=='dark'&&t!=='light')t=window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);try{if(localStorage.getItem('sidebar')==='collapsed')document.documentElement.setAttribute('data-sidebar','collapsed')}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body style="--accent:#5b3fb5">
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn" aria-label="Toggle navigation" title="Toggle sidebar" aria-controls="sidebar" aria-expanded="false"><span></span><span></span><span></span></button>
+  <a class="brand" href="index.html"><img src="assets/icons/logo.svg" alt="" width="28" height="28">Agentic AI Application Architecture</a>
+  <div class="search" id="search">
+    <input type="search" id="searchInput" placeholder="Search documentation…" autocomplete="off" aria-label="Search documentation">
+    <kbd>/</kbd>
+    <div class="search-results" id="searchResults" role="listbox" hidden></div>
+  </div>
+  <span class="version">v1.0</span>
+<button class="theme-btn" id="themeBtn" type="button" aria-label="Switch to dark mode" title="Toggle dark mode"><svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+</header>
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="Documentation">
+    <div class="sidebar-title">Design document</div>
+    <ul class="nav"><li class="nav-item"><a class="nav-link" href="index.html" style="--accent:#5b3fb5"><span class="nav-num">1</span>Introduction</a><button class="nav-toggle" aria-label="Toggle sections"></button><ul class="nav-sub"><li><a href="index.html#what-this-document-is">What this document is</a></li><li><a href="index.html#what-agentic-ai-is">What Agentic AI is</a></li><li><a href="index.html#three-generations-of-llm-applications">Three generations of LLM applications</a></li><li><a href="index.html#why-an-agent-based-architecture-is-required">Why an agent-based architecture is required</a></li><li><a href="index.html#characteristics-of-a-production-grade-agentic-system">Characteristics of a production-grade agentic system</a></li><li><a href="index.html#the-reference-architecture-at-a-glance">The reference architecture at a glance</a></li><li><a href="index.html#how-to-read-this-documentation">How to read this documentation</a></li></ul></li><li class="nav-item"><a class="nav-link" href="architecture-overview.html" style="--accent:#1d5fd1"><span class="nav-num">2</span>Architecture Overview</a><button class="nav-toggle" aria-label="Toggle sections"></button><ul class="nav-sub"><li><a href="architecture-overview.html#overview">Overview</a></li><li><a href="architecture-overview.html#the-request-lifecycle">The request lifecycle</a></li><li><a href="architecture-overview.html#the-four-flows">The four flows</a></li><li><a href="architecture-overview.html#layer-1-users-channels">Layer 1: Users &amp;amp; Channels</a></li><li><a href="architecture-overview.html#request-handling-layer-2-ingress-block">Request Handling (Layer 2, ingress block)</a></li><li><a href="architecture-overview.html#agentic-design-patterns">Agentic design patterns</a></li><li><a href="architecture-overview.html#best-practices">Best practices</a></li></ul></li><li class="nav-item"><a class="nav-link" href="agent-runtime.html" style="--accent:#1d5fd1"><span class="nav-num">3</span>Agent Runtime</a><button class="nav-toggle" aria-label="Toggle sections"></button><ul class="nav-sub"><li><a href="agent-runtime.html#overview">Overview</a></li><li><a href="agent-runtime.html#architecture">Architecture</a></li><li><a href="agent-runtime.html#implementation-guide">Implementation guide</a></li><li><a href="agent-runtime.html#example-implementation">Example implementation</a></li><li><a href="agent-runtime.html#best-practices">Best practices</a></li></ul></li><li class="nav-item active"><a class="nav-link" href="memory-system.html" style="--accent:#5b3fb5"><span class="nav-num">4</span>Memory System</a><button class="nav-toggle" aria-label="Toggle sections"></button><ul class="nav-sub"><li><a href="memory-system.html#overview">Overview</a></li><li><a href="memory-system.html#architecture">Architecture</a></li><li><a href="memory-system.html#rag-architecture-integration">RAG architecture integration</a></li><li><a href="memory-system.html#agent-memory-engineering">Agent memory engineering</a></li><li><a href="memory-system.html#implementation-guide">Implementation guide</a></li><li><a href="memory-system.html#example-implementation">Example implementation</a></li><li><a href="memory-system.html#best-practices">Best practices</a></li></ul></li><li class="nav-item"><a class="nav-link" href="tools-integrations.html" style="--accent:#d6501b"><span class="nav-num">5</span>Tools &amp; Integrations</a><button class="nav-toggle" aria-label="Toggle sections"></button><ul class="nav-sub"><li><a href="tools-integrations.html#overview">Overview</a></li><li><a href="tools-integrations.html#architecture">Architecture</a></li><li><a href="tools-integrations.html#model-context-protocol-mcp">Model Context Protocol (MCP)</a></li><li><a href="tools-integrations.html#implementation-guide">Implementation guide</a></li><li><a href="tools-integrations.html#example-implementation">Example implementation</a></li><li><a href="tools-integrations.html#best-practices">Best practices</a></li></ul></li><li class="nav-item"><a class="nav-link" href="guardrails.html" style="--accent:#c8102e"><span class="nav-num">6</span>Guardrails</a><button class="nav-toggle" aria-label="Toggle sections"></button><ul class="nav-sub"><li><a href="guardrails.html#overview">Overview</a></li><li><a href="guardrails.html#architecture">Architecture</a></li><li><a href="guardrails.html#implementation-guide">Implementation guide</a></li><li><a href="guardrails.html#example-implementation">Example implementation</a></li><li><a href="guardrails.html#best-practices">Best practices</a></li></ul></li><li class="nav-item"><a class="nav-link" href="llm-gateway.html" style="--accent:#0f8a3c"><span class="nav-num">7</span>LLM Gateway &amp; Models</a><button class="nav-toggle" aria-label="Toggle sections"></button><ul class="nav-sub"><li><a href="llm-gateway.html#overview">Overview</a></li><li><a href="llm-gateway.html#architecture">Architecture</a></li><li><a href="llm-gateway.html#layer-7-model-layer">Layer 7: Model Layer</a></li><li><a href="llm-gateway.html#llmops-architecture">LLMOps architecture</a></li><li><a href="llm-gateway.html#implementation-guide">Implementation guide</a></li><li><a href="llm-gateway.html#example-implementation">Example implementation</a></li><li><a href="llm-gateway.html#best-practices">Best practices</a></li></ul></li><li class="nav-item"><a class="nav-link" href="observability.html" style="--accent:#e07b00"><span class="nav-num">8</span>Observability &amp; Evaluation</a><button class="nav-toggle" aria-label="Toggle sections"></button><ul class="nav-sub"><li><a href="observability.html#overview">Overview</a></li><li><a href="observability.html#architecture">Architecture</a></li><li><a href="observability.html#implementation-guide">Implementation guide</a></li><li><a href="observability.html#example-implementation">Example implementation</a></li><li><a href="observability.html#best-practices">Best practices</a></li></ul></li><li class="nav-item"><a class="nav-link" href="security.html" style="--accent:#1a6fc4"><span class="nav-num">9</span>Security &amp; Governance</a><button class="nav-toggle" aria-label="Toggle sections"></button><ul class="nav-sub"><li><a href="security.html#overview">Overview</a></li><li><a href="security.html#architecture">Architecture</a></li><li><a href="security.html#security-threat-model">Security threat model</a></li><li><a href="security.html#implementation-guide">Implementation guide</a></li><li><a href="security.html#example-implementation">Example implementation</a></li><li><a href="security.html#best-practices">Best practices</a></li></ul></li><li class="nav-item"><a class="nav-link" href="deployment.html" style="--accent:#0b7a6c"><span class="nav-num">10</span>Deployment &amp; Operations</a><button class="nav-toggle" aria-label="Toggle sections"></button><ul class="nav-sub"><li><a href="deployment.html#overview">Overview</a></li><li><a href="deployment.html#layer-10-infrastructure">Layer 10: Infrastructure</a></li><li><a href="deployment.html#layer-11-devops-and-delivery-pipeline">Layer 11: DevOps and delivery pipeline</a></li><li><a href="deployment.html#performance-engineering">Performance engineering</a></li><li><a href="deployment.html#implementation-guide">Implementation guide</a></li><li><a href="deployment.html#example-implementation">Example implementation</a></li><li><a href="deployment.html#best-practices">Best practices</a></li></ul></li><li class="nav-item"><a class="nav-link" href="human-in-the-loop.html" style="--accent:#5b3fb5"><span class="nav-num">11</span>Human-in-the-Loop</a><button class="nav-toggle" aria-label="Toggle sections"></button><ul class="nav-sub"><li><a href="human-in-the-loop.html#overview">Overview</a></li><li><a href="human-in-the-loop.html#architecture">Architecture</a></li><li><a href="human-in-the-loop.html#domain-examples">Domain examples</a></li><li><a href="human-in-the-loop.html#implementation-guide">Implementation guide</a></li><li><a href="human-in-the-loop.html#example-implementation">Example implementation</a></li><li><a href="human-in-the-loop.html#best-practices">Best practices</a></li></ul></li><li class="nav-item"><a class="nav-link" href="reference-implementation.html" style="--accent:#0b7a6c"><span class="nav-num">12</span>Reference Implementation</a><button class="nav-toggle" aria-label="Toggle sections"></button><ul class="nav-sub"><li><a href="reference-implementation.html#reference-stack">Reference stack</a></li><li><a href="reference-implementation.html#end-to-end-use-case-enterprise-ai-research-assistant">End-to-end use case: Enterprise AI Research Assistant</a></li><li><a href="reference-implementation.html#production-challenges-and-solutions">Production challenges and solutions</a></li><li><a href="reference-implementation.html#technology-mapping">Technology mapping</a></li><li><a href="reference-implementation.html#implementation-roadmap">Implementation roadmap</a></li><li><a href="reference-implementation.html#production-deployment-checklist">Production deployment checklist</a></li><li><a href="reference-implementation.html#references">References</a></li></ul></li></ul>
+    <div class="sidebar-title">Downloads</div>
+    <ul class="nav nav-files">
+      <li><a href="Agentic-AI-Architecture-Design-Document.pdf">PDF whitepaper</a></li>
+      <li><a href="code-examples/agent_orchestrator.py">agent_orchestrator.py</a></li>
+      <li><a href="code-examples/memory_manager.py">memory_manager.py</a></li>
+      <li><a href="code-examples/tool_executor.py">tool_executor.py</a></li>
+      <li><a href="code-examples/llm_gateway.py">llm_gateway.py</a></li>
+      <li><a href="code-examples/guardrails.py">guardrails.py</a></li>
+      <li><a href="README.md">README.md</a></li>
+    </ul>
+  </nav>
+  <div class="scrim" id="scrim"></div>
+  <main class="content" id="content">
+    <div class="chapter-head">
+      <div class="crumbs"><a href="index.html">Documentation</a> <span>/</span> Chapter 4</div>
+      <h1><span class="ch-num">4</span>Context &amp; Memory Layer</h1>
+      <p class="summary">Layer 4: short-term and long-term memory, vector store and knowledge graph; RAG integration; memory engineering, compression and context management.</p>
+    </div>
+    <article class="prose">
+<h2 id="overview"><span class="num">4.1</span> Overview</h2>
+<p>Layer 4 gives agents continuity and knowledge. Without it every run starts from zero, cannot honour user preferences, cannot cite enterprise documents and cannot learn from previous actions. The diagram shows four stores: short-term memory (conversation history), long-term memory (user preferences, knowledge, past actions), a vector store (embeddings and index) and a knowledge graph (entities and relationships).</p>
+<p>The layer is accessed exclusively through the Memory Manager in Layer 2. That indirection is deliberate: agents ask for <em>context</em> and hand back <em>observations</em>; they never issue queries against a store. The manager applies tenant scoping, budgets the context in tokens and decides where each write belongs.</p>
+<h2 id="architecture"><span class="num">4.2</span> Architecture</h2>
+<figure class="figure diagram" id="fig-memory-flow"><div class="diagram-scroll"><img src="assets/diagrams/memory-flow.svg" alt="Memory manager read and write paths across the four stores"></div><figcaption><b>Figure 4.1.</b> Memory manager read and write paths across the four stores</figcaption><details class="mmd"><summary>Mermaid source <code>diagrams/memory-flow.mmd</code></summary><pre><code>flowchart LR
+    subgraph AGENT[&quot;Agent Runtime&quot;]
+        A[Sub-Agent]
+        MM[Memory Manager]
+    end
+    subgraph STM[&quot;Short-term memory&quot;]
+        R[(Redis&lt;br/&gt;session · scratchpad · task state)]
+    end
+    subgraph LTM[&quot;Long-term memory&quot;]
+        PG[(PostgreSQL&lt;br/&gt;preferences · episodes · audit)]
+    end
+    subgraph VS[&quot;Vector store&quot;]
+        V[(Pinecone / Milvus / pgvector&lt;br/&gt;embeddings + index)]
+    end
+    subgraph KG[&quot;Knowledge graph&quot;]
+        N[(Neo4j&lt;br/&gt;entities · relationships)]
+    end
+    EMB[Embedding model]
+    A --&gt;|read context| MM
+    MM --&gt;|1 recent turns| R
+    MM --&gt;|2 user profile| PG
+    MM --&gt;|3 semantic recall| V
+    MM --&gt;|4 entity lookup| N
+    A --&gt;|write observation| MM
+    MM --&gt;|append| R
+    MM --&gt;|consolidate| PG
+    MM --&gt;|embed| EMB --&gt; V
+    MM --&gt;|extract entities| N
+    R -.-&gt;|summarize on overflow| PG
+</code></pre></details></figure>
+<h3 id="short-term-memory"><span class="num">4.2.1</span> Short-term memory</h3>
+<p>Holds what the run needs <em>now</em>: the recent conversation window, the current task state and scratchpad notes (intermediate tool results, partial answers). It is small, hot and ephemeral.</p>
+<ul>
+<li><strong>Store</strong>: Redis (lists for turns, hashes for task state, TTL per session), or an in-memory structure for single-worker prototypes.</li>
+<li><strong>Bound</strong>: N most recent turns verbatim plus a rolling summary of older turns. When the list grows past the bound, the oldest half is summarised by a small model and the summary replaces it (memory compression).</li>
+<li><strong>Context window management</strong>: the manager assembles the prompt from prioritised sections and trims from the lowest priority upward until it fits the budget (see <code>_fit_to_budget</code> in <code>code-examples/memory_manager.py</code>). Priority order in the reference implementation: recent turns &gt; profile &gt; semantic memories &gt; graph entities.</li>
+</ul>
+<h3 id="long-term-memory"><span class="num">4.2.2</span> Long-term memory</h3>
+<p>Durable facts about the user and the tenant, and an episodic record of what the system did.</p>
+<ul>
+<li><strong>Preferences</strong>: language, tone, preferred formats, default cost centre.</li>
+<li><strong>Facts</strong>: stable knowledge extracted from conversations ("user leads the EMEA pricing team").</li>
+<li><strong>Episodes</strong>: completed objectives, decisions taken, approvals given.</li>
+<li><strong>Summaries</strong>: compressed sessions.</li>
+</ul>
+<p>Store in PostgreSQL (with <code>pgvector</code> for the embedded copy) or MongoDB. Each row carries <code>tenant_id</code>, <code>user_id</code>, <code>kind</code>, <code>content</code>, <code>embedding</code>, timestamps and an optional <code>expires_at</code> for retention policy. Writes happen at the end of a run (episode) or when an extraction step finds a durable fact; do not write every turn.</p>
+<h3 id="vector-store"><span class="num">4.2.3</span> Vector store</h3>
+<p>Purpose: semantic search over unstructured content, both enterprise documents (RAG) and memories. Given a query embedding, it returns the nearest stored embeddings by cosine or dot-product similarity.</p>
+<ul>
+<li><strong>Embeddings</strong>: dense vectors (768–3072 dimensions) from an embedding model (OpenAI <code>text-embedding-3</code>, Cohere Embed, open models such as BGE, E5, GTE via Sentence-Transformers). Use the same model for indexing and querying; changing the model requires re-indexing.</li>
+<li><strong>Indexing</strong>: HNSW (graph-based; fast, memory-hungry, default for most stores), IVF/IVF-PQ (partitioned, compressed; large corpora), DiskANN (SSD-resident). Metadata is stored alongside vectors for filtering (tenant, ACL groups, document type, date).</li>
+<li><strong>Similarity search</strong>: approximate nearest neighbours with metadata pre-filtering. Combine with sparse (BM25) retrieval for <em>hybrid search</em>, then re-rank the union with a cross-encoder.</li>
+</ul>
+<figure class="table-figure"><figcaption><b>Table 4.1.</b> Vector store options</figcaption><div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Technology</th>
+<th>Deployment</th>
+<th>Strengths</th>
+<th>Considerations</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pinecone</td>
+<td>Managed SaaS</td>
+<td>Zero ops, serverless tiers, namespaces for tenancy</td>
+<td>Data leaves your VPC unless on private deployment; cost at scale</td>
+</tr>
+<tr>
+<td>Weaviate</td>
+<td>Self-hosted or cloud</td>
+<td>Hybrid search built in, modules for embedding, GraphQL API</td>
+<td>Operational overhead self-hosted</td>
+</tr>
+<tr>
+<td>Milvus / Zilliz</td>
+<td>Self-hosted or cloud</td>
+<td>High scale (billions), GPU indexing, many index types</td>
+<td>Heavier to operate; needs etcd, MinIO, Pulsar</td>
+</tr>
+<tr>
+<td>Qdrant</td>
+<td>Self-hosted or cloud</td>
+<td>Rust, efficient filtering, payload indexes</td>
+<td>Smaller ecosystem</td>
+</tr>
+<tr>
+<td>pgvector</td>
+<td>Extension of PostgreSQL</td>
+<td>One database for relational + vectors, transactions, ACL joins</td>
+<td>HNSW performance fine to tens of millions of rows; beyond that specialise</td>
+</tr>
+<tr>
+<td>FAISS</td>
+<td>Library</td>
+<td>Fastest local ANN, research-grade</td>
+<td>No server, no filtering, no persistence layer; embed in a service</td>
+</tr>
+<tr>
+<td>Chroma</td>
+<td>Embedded / small server</td>
+<td>Very simple developer experience</td>
+<td>Prototyping and small deployments</td>
+</tr>
+</tbody>
+</table></div></figure>
+<p>Start with pgvector unless the corpus is beyond ~20–50 million chunks or query latency requirements are extreme; a single database simplifies tenancy, ACL filtering and backups enormously.</p>
+<h3 id="knowledge-graph"><span class="num">4.2.4</span> Knowledge graph</h3>
+<p>Purpose: reasoning over <em>connected</em> information: who owns which product, which supplier delivers which component, which regulation applies to which process. Vector search finds similar text; a graph answers multi-hop questions ("which customers are affected if supplier X fails?") that similarity cannot.</p>
+<ul>
+<li><strong>Store</strong>: Neo4j (Cypher), Amazon Neptune, TigerGraph, or a property graph on PostgreSQL (Apache AGE) for modest sizes.</li>
+<li><strong>Population</strong>: entity and relation extraction from documents and conversations by an LLM extraction prompt with a fixed ontology, merged by canonical IDs; plus direct sync from systems of record (CRM accounts, ERP items).</li>
+<li><strong>Retrieval</strong>: identify entities in the query (NER or LLM), fetch their k-hop neighbourhood, serialise as triples or short sentences into the context. GraphRAG-style community summaries help for global questions.</li>
+</ul>
+<p>Use a graph only when the domain has a real relational structure that matters for answers. For many document-Q&amp;A use cases a vector store with good metadata is enough.</p>
+<h2 id="rag-architecture-integration"><span class="num">4.3</span> RAG architecture integration</h2>
+<p>Retrieval-Augmented Generation is how enterprise knowledge enters the agent's context. In an agentic system it is exposed as a tool (<code>retrieve_documents</code>) that the Researcher and Analyst call, and as an internal step of the memory manager for semantic recall.</p>
+<figure class="figure diagram" id="fig-rag-pipeline"><div class="diagram-scroll"><img src="assets/diagrams/rag-pipeline.svg" alt="Document ingestion pipeline (offline) and retrieval path (online)"></div><figcaption><b>Figure 4.2.</b> Document ingestion pipeline (offline) and retrieval path (online)</figcaption><details class="mmd"><summary>Mermaid source <code>diagrams/rag-pipeline.mmd</code></summary><pre><code>flowchart LR
+    subgraph INGEST[&quot;Ingestion pipeline (offline)&quot;]
+        SRC[Sources&lt;br/&gt;PDF · HTML · Confluence · DB] --&gt; PARSE[Parse &amp; clean]
+        PARSE --&gt; CHUNK[Chunk&lt;br/&gt;semantic / recursive]
+        CHUNK --&gt; ENR[Enrich&lt;br/&gt;metadata · ACLs]
+        ENR --&gt; EMB1[Embed]
+        EMB1 --&gt; IDX[(Vector index&lt;br/&gt;+ BM25 index)]
+    end
+    subgraph QUERY[&quot;Retrieval (online)&quot;]
+        Q[Agent query] --&gt; RW[Query rewrite&lt;br/&gt;HyDE / multi-query]
+        RW --&gt; EMB2[Embed]
+        EMB2 --&gt; HYB[Hybrid search&lt;br/&gt;dense + sparse]
+        IDX --&gt; HYB
+        HYB --&gt; ACL[ACL filter]
+        ACL --&gt; RR[Re-rank&lt;br/&gt;cross-encoder]
+        RR --&gt; CTX[Context window&lt;br/&gt;assembly]
+        CTX --&gt; LLM[LLM generation&lt;br/&gt;with citations]
+    end
+</code></pre></details></figure>
+<h3 id="document-ingestion-pipeline"><span class="num">4.3.1</span> Document ingestion pipeline</h3>
+<ol>
+<li><strong>Connect and load.</strong> Connectors for SharePoint, Confluence, Google Drive, S3, databases, ticketing systems. Track source, version, ACL and last-modified for incremental re-indexing.</li>
+<li><strong>Parse and clean.</strong> PDF (with layout-aware parsers such as Docling, Unstructured, Azure Document Intelligence), HTML, Office formats; extract tables as tables; OCR scanned pages; drop boilerplate.</li>
+<li><strong>Chunking.</strong> Split into retrieval units. Options: fixed-size with overlap (simple, robust), recursive by structure (headings, paragraphs), semantic (embedding-similarity boundaries), or parent–child (retrieve small chunks, return the enclosing section). Typical sizes: 300–800 tokens with 10–20 % overlap. Attach metadata: title, section path, page, source URL, ACL groups, classification.</li>
+<li><strong>Enrichment.</strong> Optional LLM-generated summaries, hypothetical questions per chunk, keyword extraction; improves recall at ingestion cost.</li>
+<li><strong>Embedding generation.</strong> Batch embed with the chosen model; store the model name and version with the vector.</li>
+<li><strong>Vector indexing.</strong> Upsert into the vector store with metadata; maintain a parallel BM25/full-text index for hybrid search; write chunk text to object storage or the database.</li>
+</ol>
+<p>Run the pipeline as a workflow (Airflow, Prefect, Temporal, or a queue-driven service) with idempotent steps and per-document versioning so deletes and updates propagate.</p>
+<h3 id="retrieval"><span class="num">4.3.2</span> Retrieval</h3>
+<ol>
+<li><strong>Query rewrite.</strong> Rephrase the agent's question for retrieval; multi-query (several paraphrases) or HyDE (embed a hypothetical answer) improve recall.</li>
+<li><strong>Hybrid search.</strong> Dense ANN + sparse BM25, merged by reciprocal rank fusion.</li>
+<li><strong>ACL filter.</strong> Filter by the <em>user's</em> groups (the principal on the run), never by the agent's identity. Enforce in the query, not after.</li>
+<li><strong>Re-ranking.</strong> Cross-encoder (Cohere Rerank, BGE-reranker, ColBERT) over the top 50 to select the top 5–10.</li>
+<li><strong>Context augmentation.</strong> Assemble chunks with source identifiers into the prompt, within the token budget; instruct the model to cite by identifier.</li>
+</ol>
+<h3 id="evaluation"><span class="num">4.3.3</span> Evaluation</h3>
+<p>Measure retrieval and generation separately: recall@k and MRR on a labelled query set; faithfulness, answer relevance and context precision with RAGAS or equivalent LLM-judged metrics (see <a href="observability.html">Observability</a>).</p>
+<h2 id="agent-memory-engineering"><span class="num">4.4</span> Agent memory engineering</h2>
+<p>Memory is not one thing. Design each kind explicitly.</p>
+<figure class="table-figure"><figcaption><b>Table 4.2.</b> Memory kinds, storage and retrieval strategy</figcaption><div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Kind</th>
+<th>Content</th>
+<th>Storage</th>
+<th>Written when</th>
+<th>Retrieved by</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Working / scratchpad</td>
+<td>Intermediate results of the current task</td>
+<td>Run state (checkpoint)</td>
+<td>Every step</td>
+<td>Direct (in state)</td>
+</tr>
+<tr>
+<td>Conversational</td>
+<td>Recent turns + rolling summary</td>
+<td>Redis</td>
+<td>Every turn</td>
+<td>Always, bounded window</td>
+</tr>
+<tr>
+<td>Episodic</td>
+<td>What happened: objectives, decisions, approvals</td>
+<td>PostgreSQL (+ embedding)</td>
+<td>End of run</td>
+<td>Semantic recall, time filters</td>
+</tr>
+<tr>
+<td>Semantic (user/tenant facts)</td>
+<td>Preferences, stable facts</td>
+<td>PostgreSQL (+ embedding)</td>
+<td>Extraction step</td>
+<td>Always (profile) + semantic recall</td>
+</tr>
+<tr>
+<td>Procedural</td>
+<td>How to do things: learned tool sequences, prompt tweaks</td>
+<td>Prompt registry / skills store</td>
+<td>Curated, via HITL and evaluation</td>
+<td>Loaded by agent type</td>
+</tr>
+<tr>
+<td>Document knowledge</td>
+<td>Enterprise corpus</td>
+<td>Vector store + object storage</td>
+<td>Ingestion pipeline</td>
+<td>RAG tool</td>
+</tr>
+<tr>
+<td>Relational knowledge</td>
+<td>Entities and relationships</td>
+<td>Knowledge graph</td>
+<td>Extraction / sync</td>
+<td>Entity lookup</td>
+</tr>
+</tbody>
+</table></div></figure>
+<h3 id="memory-compression"><span class="num">4.4.1</span> Memory compression</h3>
+<ul>
+<li><strong>Summarisation</strong>: replace old turns with an LLM summary; keep the summary itself bounded (re-summarise the summary).</li>
+<li><strong>Extraction</strong>: turn conversations into discrete facts ("prefers tables over prose") and store facts, not transcripts.</li>
+<li><strong>Deduplication</strong>: before writing a fact, search for near-duplicates (cosine &gt; 0.9) and update instead of insert.</li>
+<li><strong>Decay</strong>: episodic memories get an <code>expires_at</code>; retention policies from Layer 9 apply.</li>
+</ul>
+<h3 id="context-management"><span class="num">4.4.2</span> Context management</h3>
+<p>The context window is a budget to be allocated, not a bucket to be filled. A useful default allocation for a 32k working context: 15 % system prompt and tool schemas, 25 % recent conversation, 30 % retrieved documents, 10 % memories and profile, 20 % headroom for the model's reasoning and output. Track actual usage per run in observability and tune.</p>
+<p>Long-context models (200k–1M tokens) reduce but do not remove the need for management: cost is linear in tokens, latency grows, and models still attend better to well-curated context than to dumps.</p>
+<h2 id="implementation-guide"><span class="num">4.5</span> Implementation guide</h2>
+<ul>
+<li>Put tenant and user IDs on every row and in every query; test with two tenants in CI.</li>
+<li>Choose embedding dimensionality by need; 1024–1536 is the practical range. Store the model version; plan a re-index job.</li>
+<li>Use HNSW with <code>ef_search</code> tuned per latency target; measure recall against exact search on a sample.</li>
+<li>Keep chunk text outside the vector index (object storage or a table) so the index stays small and text can be updated.</li>
+<li>Implement <code>forget_user(tenant, user)</code> from day one; erasure requests arrive.</li>
+<li>Snapshot Redis (AOF) if session loss is unacceptable; otherwise accept ephemeral short-term memory and rely on PostgreSQL history.</li>
+</ul>
+<h2 id="example-implementation"><span class="num">4.6</span> Example implementation</h2>
+<p>Context bundle assembly (from <code>code-examples/memory_manager.py</code>):</p>
+<div class="codehilite"><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">load_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session_id</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">tenant_id</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">):</span>
+    <span class="n">recent</span>   <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_recent_turns</span><span class="p">(</span><span class="n">session_id</span><span class="p">)</span>                    <span class="c1"># Redis window + summary</span>
+    <span class="n">profile</span>  <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_profile</span><span class="p">(</span><span class="n">tenant_id</span><span class="p">,</span> <span class="n">user_id</span><span class="p">)</span>                 <span class="c1"># Postgres preferences/facts</span>
+    <span class="n">memories</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_semantic_recall</span><span class="p">(</span><span class="n">tenant_id</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span>  <span class="c1"># pgvector ANN</span>
+    <span class="n">entities</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_graph_context</span><span class="p">(</span><span class="n">query</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="k">else</span> <span class="p">[]</span>  <span class="c1"># Neo4j neighbourhood</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fit_to_budget</span><span class="p">({</span><span class="s2">&quot;recent_turns&quot;</span><span class="p">:</span> <span class="n">recent</span><span class="p">,</span> <span class="s2">&quot;profile&quot;</span><span class="p">:</span> <span class="n">profile</span><span class="p">,</span>
+                                <span class="s2">&quot;relevant_memories&quot;</span><span class="p">:</span> <span class="n">memories</span><span class="p">,</span> <span class="s2">&quot;entities&quot;</span><span class="p">:</span> <span class="n">entities</span><span class="p">})</span>
+</code></pre></div>
+
+<p>pgvector schema and index:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="n">EXTENSION</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">vector</span><span class="p">;</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">memories</span><span class="w"> </span><span class="p">(</span>
+<span class="w">  </span><span class="n">id</span><span class="w"> </span><span class="n">BIGSERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span><span class="w"> </span><span class="n">tenant_id</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">user_id</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="n">kind</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">content</span><span class="w"> </span><span class="nb">TEXT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">embedding</span><span class="w"> </span><span class="n">vector</span><span class="p">(</span><span class="mi">1536</span><span class="p">),</span>
+<span class="w">  </span><span class="n">created_at</span><span class="w"> </span><span class="n">TIMESTAMPTZ</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">now</span><span class="p">(),</span><span class="w"> </span><span class="n">expires_at</span><span class="w"> </span><span class="n">TIMESTAMPTZ</span><span class="p">);</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">memories</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">hnsw</span><span class="w"> </span><span class="p">(</span><span class="n">embedding</span><span class="w"> </span><span class="n">vector_cosine_ops</span><span class="p">);</span>
+<span class="c1">-- query: ORDER BY embedding &lt;=&gt; $1 LIMIT 8, always with WHERE tenant_id=$2 AND user_id=$3</span>
+</code></pre></div>
+
+<p>Neo4j neighbourhood query:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">e</span><span class="p">:</span><span class="n">Entity</span><span class="p">)</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="err">$</span><span class="n">names</span>
+<span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">-[</span><span class="n">r</span><span class="o">]-</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="k">RETURN</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">entity</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">relation</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">related</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="m">50</span>
+</code></pre></div>
+
+<h2 id="best-practices"><span class="num">4.7</span> Best practices</h2>
+<ul>
+<li><strong>Common mistakes.</strong> Storing raw transcripts as long-term memory; unbounded conversation history; filtering ACLs after retrieval (leaks via top-k); mixing embedding model versions in one index; using the knowledge graph as a document store.</li>
+<li><strong>Optimisation.</strong> Hybrid search plus re-ranking beats a bigger top-k; cache embeddings of repeated queries; batch ingestion embeddings; pre-compute user profile bundles.</li>
+<li><strong>Security.</strong> Memory is user data: encrypt at rest, apply retention, scope every read, log access; never let one user's memory be retrievable by another through similarity search.</li>
+</ul>
+    </article>
+    <nav class="pagernav"><a class="pager prev" href="agent-runtime.html"><span>Previous</span>Agent Runtime</a><a class="pager next" href="tools-integrations.html"><span>Next</span>Tools &amp; Integrations</a></nav>
+    <footer class="foot">Design and Implementation of a Production-Grade Agentic AI Application Architecture · Version 1.0 · 26 September 2026</footer>
+  </main>
+  <aside class="rail" aria-label="On this page">
+    <div class="rail-title">On this page</div>
+    <ul class="toc"><li class="l2"><a href="#overview">Overview</a></li><li class="l2"><a href="#architecture">Architecture</a></li><li class="l3"><a href="#short-term-memory">Short-term memory</a></li><li class="l3"><a href="#long-term-memory">Long-term memory</a></li><li class="l3"><a href="#vector-store">Vector store</a></li><li class="l3"><a href="#knowledge-graph">Knowledge graph</a></li><li class="l2"><a href="#rag-architecture-integration">RAG architecture integration</a></li><li class="l3"><a href="#document-ingestion-pipeline">Document ingestion pipeline</a></li><li class="l3"><a href="#retrieval">Retrieval</a></li><li class="l3"><a href="#evaluation">Evaluation</a></li><li class="l2"><a href="#agent-memory-engineering">Agent memory engineering</a></li><li class="l3"><a href="#memory-compression">Memory compression</a></li><li class="l3"><a href="#context-management">Context management</a></li><li class="l2"><a href="#implementation-guide">Implementation guide</a></li><li class="l2"><a href="#example-implementation">Example implementation</a></li><li class="l2"><a href="#best-practices">Best practices</a></li></ul>
+  </aside>
+</div>
+<script src="assets/search-index.js"></script>
+<script src="assets/site.js"></script>
+</body>
+</html>

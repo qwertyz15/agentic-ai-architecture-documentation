@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Design and Implementation of a Production-Grade Agentic AI Application Architecture</title>
+<style>
+:root { --text:#1c2333; --muted:#5f6b7a; --border:#d9dee6; --accent:#1d5fd1; --bg-code:#f3f5f8; --bg-side:#f6f7f9; }
+@page { size: A4; }
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body { font-family: "Liberation Sans", Arial, Helvetica, sans-serif; font-size: 10.5pt; line-height: 1.5; color: var(--text); }
+a { color: var(--accent); text-decoration: none; }
+h1, h2, h3, h4 { break-after: avoid; page-break-after: avoid; line-height: 1.25; letter-spacing: -0.01em; }
+p { margin: 0 0 8pt; orphans: 3; widows: 3; }
+ul, ol { margin: 0 0 8pt; padding-left: 18pt; }
+li { margin: 2pt 0; }
+code { font-family: "DejaVu Sans Mono", "Liberation Mono", monospace; font-size: 8.6pt; background: var(--bg-code); padding: 0 2pt; border-radius: 2pt; }
+pre { background: var(--bg-code); border: 0.5pt solid var(--border); border-radius: 4pt; padding: 8pt 10pt; font-size: 8.2pt; line-height: 1.45; white-space: pre-wrap; word-break: break-word; margin: 0 0 10pt; }
+pre code { background: none; padding: 0; font-size: inherit; }
+.codehilite { margin: 0 0 10pt; }
+.codehilite pre { margin: 0; }
+strong { font-weight: 700; }
+blockquote { margin: 0 0 8pt; padding: 6pt 10pt; border-left: 2pt solid var(--accent); background: var(--bg-side); }
+
+/* cover */
+.cover { height: 257mm; display: flex; flex-direction: column; break-after: page; page-break-after: always; padding-top: 10mm; }
+.cover .kicker { color: var(--accent); font-weight: 700; font-size: 11pt; margin-bottom: 14pt; }
+.cover h1 { font-size: 28pt; margin: 0 0 12pt; letter-spacing: -0.02em; line-height: 1.15; }
+.cover .subtitle { font-size: 14pt; color: var(--muted); margin: 0 0 22pt; line-height: 1.4; }
+.cover img { width: 100%; border: 0.5pt solid var(--border); border-radius: 4pt; }
+.cover .meta { margin-top: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 8pt 24pt; border-top: 1pt solid var(--border); padding-top: 12pt; font-size: 10pt; }
+.cover .meta div span { display: block; color: var(--muted); font-size: 8.5pt; }
+.cover .meta .blank { display: inline-block; border-bottom: 0.7pt solid var(--text); min-width: 160pt; height: 12pt; vertical-align: bottom; }
+
+/* front matter */
+.front { break-after: page; page-break-after: always; }
+.front h1 { font-size: 20pt; margin: 0 0 12pt; }
+.toc-list { list-style: none; padding: 0; margin: 0; }
+.toc-list li { display: flex; align-items: baseline; gap: 6pt; padding: 2.5pt 0; }
+.toc-list li.l1 { font-weight: 700; margin-top: 8pt; font-size: 11pt; }
+.toc-list li.l2 { padding-left: 22pt; font-size: 10pt; }
+.toc-list .n { flex: none; min-width: 20pt; color: var(--accent); font-variant-numeric: tabular-nums; }
+.toc-list li.l2 .n { min-width: 28pt; color: var(--muted); }
+.toc-list .t { color: var(--text); }
+.toc-list .dots { flex: 1; border-bottom: 0.6pt dotted #9aa3ae; margin: 0 4pt; transform: translateY(-3pt); }
+.toc-list .p { flex: none; font-variant-numeric: tabular-nums; color: var(--muted); }
+.figlist li { font-size: 9.5pt; }
+
+/* chapters */
+.chapter { break-before: page; page-break-before: always; }
+.chapter-head { border-bottom: 1.5pt solid var(--accent); padding-bottom: 10pt; margin-bottom: 14pt; }
+.chapter-kicker { color: var(--accent); font-weight: 700; font-size: 10pt; margin-bottom: 4pt; }
+.chapter-title { font-size: 22pt; margin: 0 0 8pt; display: flex; align-items: center; gap: 10pt; }
+.chapter-title .ch-num { display: none; }
+.chapter-summary { color: var(--muted); font-size: 11pt; margin: 0; }
+.chapter h2 { font-size: 15pt; margin: 18pt 0 8pt; padding-top: 6pt; }
+.chapter h3 { font-size: 12pt; margin: 14pt 0 6pt; }
+.chapter h4 { font-size: 10.5pt; margin: 10pt 0 4pt; }
+.chapter h2 .num, .chapter h3 .num { color: var(--accent); margin-right: 3pt; }
+
+/* figures & tables */
+.figure { margin: 6pt 0 12pt; break-inside: avoid; page-break-inside: avoid; }
+.figure img { max-width: 100%; max-height: 190mm; display: block; margin: 0 auto; }
+.figure.arch img { border: 0.5pt solid var(--border); }
+.figure.diagram .diagram-scroll { border: 0.5pt solid var(--border); border-radius: 4pt; padding: 8pt; }
+figcaption { font-size: 9pt; color: var(--muted); margin-top: 5pt; text-align: center; }
+.table-figure { margin: 6pt 0 12pt; }
+.table-figure figcaption { text-align: left; margin: 0 0 4pt; }
+table { border-collapse: collapse; width: 100%; font-size: 8.6pt; line-height: 1.35; }
+th, td { border: 0.5pt solid var(--border); padding: 4pt 5pt; vertical-align: top; text-align: left; }
+th { background: var(--bg-side); font-weight: 700; }
+tr { break-inside: avoid; page-break-inside: avoid; }
+thead { display: table-header-group; }
+td:first-child { font-weight: 600; }
+.mmd { display: none; }
+li.task { list-style: none; margin-left: -14pt; }
+li.task .checkbox { display: inline-block; width: 8pt; height: 8pt; border: 0.8pt solid var(--muted); border-radius: 1.5pt; margin-right: 6pt; vertical-align: -1pt; }
+.admonition { border: 0.5pt solid var(--border); border-left: 2pt solid var(--accent); padding: 6pt 10pt; margin: 0 0 10pt; background: var(--bg-side); }
+.admonition-title { font-weight: 700; }
+/*PYGMENTS*/
+.codehilite .err { border: 0 !important; color: inherit !important; background: none !important; }
+</style>
+</head>
+<body>
+
+<section class="cover">
+  <div class="kicker">Engineering Design Document</div>
+  <h1>Design and Implementation of a Production-Grade Agentic AI Application Architecture</h1>
+  <p class="subtitle">Architecture, Engineering Design, Security, Deployment and Operational Guidelines</p>
+  <img src="../agentic-ai-architecture-documentation/assets/architecture-diagram.png" alt="Architecture of an Agentic AI Application">
+  <div class="meta">
+    <div><span>Document version</span>{{VERSION}}</div>
+    <div><span>Date</span>{{DATE}}</div>
+    <div><span>Author</span><span class="blank"></span></div>
+    <div><span>Status</span>Reference architecture, for review</div>
+  </div>
+</section>
+
+<section class="front" id="executive-summary">
+  <h1>Executive Summary</h1>
+  {{EXEC_SUMMARY}}
+</section>
+
+<section class="front" id="toc">
+  <h1>Table of Contents</h1>
+  <!--TOC:{{TOC_ENTRIES}}-->
+  <ul class="toc-list" id="tocList"></ul>
+</section>
+
+{{CHAPTERS}}
+
+</body>
+</html>

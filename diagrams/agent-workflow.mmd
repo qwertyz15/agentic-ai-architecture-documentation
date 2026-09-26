@@ -1,0 +1,28 @@
+flowchart TD
+    START([Task received]) --> LOAD[Load context from Memory Manager]
+    LOAD --> PLAN[Planner / Reasoner<br/>decompose into task DAG]
+    PLAN --> ROUTE{Assign task}
+    ROUTE -->|information need| RES[Researcher Sub-Agent]
+    ROUTE -->|interpretation need| ANA[Analyst Sub-Agent]
+    ROUTE -->|computation need| COD[Coder Sub-Agent]
+    RES --> LOOP
+    ANA --> LOOP
+    COD --> LOOP
+    subgraph LOOP["ReAct loop (per sub-agent)"]
+        direction TB
+        THINK[Thought] --> ACT[Action: tool call]
+        ACT --> OBS[Observation]
+        OBS --> DONE{Goal met?}
+        DONE -->|no, iter < max| THINK
+    end
+    DONE -->|yes| SHARE[Write result to shared state]
+    DONE -->|budget exhausted| ESC[Escalate to orchestrator]
+    SHARE --> MORE{More tasks?}
+    ESC --> REPLAN[Re-plan or HITL]
+    REPLAN --> ROUTE
+    MORE -->|yes| ROUTE
+    MORE -->|no| REFLECT[Reflection: critique draft]
+    REFLECT -->|revise| ROUTE
+    REFLECT -->|accept| SYN[Synthesize final response]
+    SYN --> MEMW[Update memory]
+    MEMW --> END([Return])

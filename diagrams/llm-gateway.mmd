@@ -1,0 +1,17 @@
+flowchart LR
+    A[Agents & Guardrails] --> GW
+    subgraph GW["6. LLM Gateway"]
+        direction TB
+        AUTH[Virtual keys & quotas] --> CACHE{Cache hit?}
+        CACHE -->|yes| RESP[Return cached]
+        CACHE -->|no| ROUTER[Router<br/>task class · cost · latency]
+        ROUTER --> LB[Load balancer]
+        LB --> FO[Failover & retries]
+        FO --> LOG[Audit log · token metering]
+    end
+    FO --> P1[OpenAI]
+    FO --> P2[Anthropic]
+    FO --> P3[Google Gemini]
+    FO --> P4[Azure OpenAI / Bedrock]
+    FO --> P5[Self-hosted vLLM<br/>Llama · Mistral · Qwen]
+    LOG --> OBS[Observability]

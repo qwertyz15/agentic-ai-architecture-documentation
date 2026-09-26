@@ -1,0 +1,18 @@
+flowchart LR
+    subgraph INGEST["Ingestion pipeline (offline)"]
+        SRC[Sources<br/>PDF · HTML · Confluence · DB] --> PARSE[Parse & clean]
+        PARSE --> CHUNK[Chunk<br/>semantic / recursive]
+        CHUNK --> ENR[Enrich<br/>metadata · ACLs]
+        ENR --> EMB1[Embed]
+        EMB1 --> IDX[(Vector index<br/>+ BM25 index)]
+    end
+    subgraph QUERY["Retrieval (online)"]
+        Q[Agent query] --> RW[Query rewrite<br/>HyDE / multi-query]
+        RW --> EMB2[Embed]
+        EMB2 --> HYB[Hybrid search<br/>dense + sparse]
+        IDX --> HYB
+        HYB --> ACL[ACL filter]
+        ACL --> RR[Re-rank<br/>cross-encoder]
+        RR --> CTX[Context window<br/>assembly]
+        CTX --> LLM[LLM generation<br/>with citations]
+    end

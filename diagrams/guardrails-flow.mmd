@@ -1,0 +1,22 @@
+flowchart LR
+    IN[Incoming request] --> S1[Schema validation]
+    S1 --> S2[Prompt injection & jailbreak classifier]
+    S2 --> S3[PII / secret detection]
+    S3 --> S4[Toxicity / abuse filter]
+    S4 --> S5[Policy & compliance rules]
+    S5 --> S6[Context sanitization]
+    S6 -->|pass| RUN[Agent Runtime]
+    S2 -->|block| REJ[Refusal / safe response]
+    S4 -->|block| REJ
+    S5 -->|block| REJ
+    S3 -->|mask| S4
+    RUN --> O1[Response validation]
+    O1 --> O2[Hallucination / grounding check]
+    O2 --> O3[Fact verification]
+    O3 --> O4[PII / secrets masking]
+    O4 --> O5[Toxicity / harm detection]
+    O5 --> O6[Policy compliance]
+    O6 -->|pass| OUT[Deliver response]
+    O2 -->|fail| REGEN[Regenerate with feedback]
+    O6 -->|fail| REJ
+    REGEN --> RUN

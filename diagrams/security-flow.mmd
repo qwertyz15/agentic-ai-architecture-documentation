@@ -1,0 +1,26 @@
+flowchart TB
+    U[User] -->|TLS 1.3| EDGE[WAF · API Gateway]
+    EDGE -->|OIDC / JWT| AUTHN[Authentication]
+    AUTHN --> AUTHZ[Authorization<br/>RBAC + ABAC policy engine]
+    AUTHZ --> IG[Input guardrails]
+    IG --> RT[Agent runtime]
+    RT -->|scoped tool token| TP{Tool permission<br/>policy}
+    TP -->|read-only| MCP[MCP server]
+    TP -->|write / high-risk| HITL[Human approval]
+    HITL --> MCP
+    RT --> SBX[Sandbox<br/>no network · resource limits]
+    RT --> GW[LLM gateway<br/>virtual keys]
+    MCP -.->|untrusted output| IG2[Result sanitization]
+    IG2 --> RT
+    RT --> OG[Output guardrails]
+    OG --> U
+    subgraph GOV["Governance"]
+        AUD[Immutable audit trail]
+        CLS[Data classification]
+        RET[Retention policies]
+        KMS[KMS · Vault secrets]
+    end
+    AUTHZ -.-> AUD
+    TP -.-> AUD
+    OG -.-> AUD
+    RT -.-> CLS

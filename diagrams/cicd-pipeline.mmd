@@ -1,0 +1,14 @@
+flowchart LR
+    C[Code commit<br/>Git] --> B[Build<br/>lint · type-check]
+    B --> T[Tests<br/>unit · agent evals · RAGAS]
+    T --> S[Security scan<br/>SAST · deps · secrets · prompt tests]
+    S --> CB[Container build<br/>signed image]
+    CB --> IaC[Terraform plan/apply]
+    IaC --> DEV[Dev]
+    DEV --> STG[Staging<br/>shadow evals]
+    STG --> CAN[Canary 5%]
+    CAN -->|SLO ok| PROD[Production<br/>blue-green]
+    CAN -->|regression| RB[Automatic rollback]
+    PROD --> MON[Monitoring & evaluation]
+    MON --> FB[Feedback<br/>datasets · prompt updates]
+    FB --> C

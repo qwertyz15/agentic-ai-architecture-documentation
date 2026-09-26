@@ -1,0 +1,22 @@
+flowchart TD
+    D[Sub-agent decides] --> SEL[Tool selection<br/>schema-matched from registry]
+    SEL --> PERM{Permission check<br/>RBAC · tool policy}
+    PERM -->|denied| REF[Return refusal to agent]
+    PERM -->|high risk| HITL[Human approval]
+    HITL -->|rejected| REF
+    HITL -->|approved| VAL
+    PERM -->|allowed| VAL[Validate arguments<br/>JSON Schema]
+    VAL --> EXEC[Execute]
+    EXEC --> MCP[MCP server]
+    EXEC --> API[REST / GraphQL]
+    EXEC --> SBX[Sandbox]
+    EXEC --> DB[(Database)]
+    MCP --> RES
+    API --> RES
+    SBX --> RES
+    DB --> RES
+    RES[Result<br/>timeout · retry · circuit breaker] --> SAN[Sanitize result<br/>treat as untrusted]
+    SAN --> MEM[Persist observation]
+    MEM --> BUILD[Response builder]
+    BUILD --> FMT[Output formatter<br/>markdown · JSON · UI blocks]
+    FMT --> STREAM[Stream / return]

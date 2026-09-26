@@ -1,0 +1,53 @@
+sequenceDiagram
+    autonumber
+    actor User
+    participant App as Application Interface
+    participant RH as Request Handling
+    participant IG as Input Guardrails
+    participant ORCH as Agent Orchestrator
+    participant PL as Planner
+    participant SA as Sub-Agent
+    participant MEM as Memory Manager
+    participant AE as Action Executor
+    participant TOOL as Tool / MCP Server
+    participant GW as LLM Gateway
+    participant LLM as Model
+    participant OG as Output Guardrails
+    participant OBS as Observability
+
+    User->>App: Submit request
+    App->>RH: POST /v1/runs (JWT)
+    RH->>RH: Authenticate · authorize · rate-limit · validate
+    RH->>IG: Sanitized request
+    IG-->>RH: Reject (policy violation)
+    IG->>ORCH: Approved request + risk labels
+    ORCH->>MEM: Load session + long-term context
+    MEM-->>ORCH: Context bundle
+    ORCH->>PL: Build plan
+    PL->>GW: Planning prompt
+    GW->>LLM: Routed to reasoning model
+    LLM-->>GW: Plan (JSON)
+    GW-->>PL: Plan
+    PL-->>ORCH: Task DAG
+    loop For each task node
+        ORCH->>SA: Dispatch task + context
+        SA->>GW: Reason / decide tool
+        GW->>LLM: Inference
+        LLM-->>SA: Tool call
+        SA->>AE: Execute tool
+        AE->>TOOL: Invoke (permission-checked)
+        TOOL-->>AE: Result
+        AE->>MEM: Persist observation
+        AE-->>SA: Observation
+        SA-->>ORCH: Task result
+    end
+    ORCH->>SA: Synthesize final answer
+    SA->>OG: Draft response
+    OG->>OG: Hallucination · PII · policy checks
+    OG-->>RH: Approved response
+    RH-->>App: Stream tokens (SSE)
+    App-->>User: Rendered answer
+    par Telemetry
+        ORCH->>OBS: Trace + metrics
+        GW->>OBS: Token usage + cost
+    end

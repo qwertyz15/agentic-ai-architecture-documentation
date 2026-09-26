@@ -1,0 +1,29 @@
+flowchart LR
+    subgraph AGENT["Agent Runtime"]
+        A[Sub-Agent]
+        MM[Memory Manager]
+    end
+    subgraph STM["Short-term memory"]
+        R[(Redis<br/>session · scratchpad · task state)]
+    end
+    subgraph LTM["Long-term memory"]
+        PG[(PostgreSQL<br/>preferences · episodes · audit)]
+    end
+    subgraph VS["Vector store"]
+        V[(Pinecone / Milvus / pgvector<br/>embeddings + index)]
+    end
+    subgraph KG["Knowledge graph"]
+        N[(Neo4j<br/>entities · relationships)]
+    end
+    EMB[Embedding model]
+    A -->|read context| MM
+    MM -->|1 recent turns| R
+    MM -->|2 user profile| PG
+    MM -->|3 semantic recall| V
+    MM -->|4 entity lookup| N
+    A -->|write observation| MM
+    MM -->|append| R
+    MM -->|consolidate| PG
+    MM -->|embed| EMB --> V
+    MM -->|extract entities| N
+    R -.->|summarize on overflow| PG

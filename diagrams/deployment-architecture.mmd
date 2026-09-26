@@ -1,0 +1,40 @@
+flowchart TB
+    USER[Users] --> CDN[CDN + WAF]
+    CDN --> ALB[Load balancer / API Gateway]
+    subgraph VPC["VPC"]
+        subgraph PUB["Public subnets"]
+            ALB
+        end
+        subgraph PRIV["Private subnets · Kubernetes cluster"]
+            FE[Frontend pods<br/>Next.js]
+            API[API pods<br/>FastAPI]
+            RT[Agent runtime pods<br/>LangGraph workers]
+            GWP[LLM gateway pods<br/>LiteLLM]
+            GR[Guardrail service]
+            MCPS[MCP tool servers]
+            SBX[Sandbox pool<br/>gVisor / Firecracker]
+            OTEL[OTel collector]
+        end
+        subgraph DATA["Data subnets"]
+            PG[(PostgreSQL<br/>RDS)]
+            RD[(Redis<br/>ElastiCache)]
+            VDB[(Vector DB)]
+            KG[(Neo4j)]
+            MQ[[Message queue<br/>SQS / Kafka]]
+        end
+        S3[(Object storage)]
+        KMS[KMS + Secrets Manager]
+    end
+    ALB --> FE --> API
+    API --> RT
+    RT --> GR
+    RT --> GWP
+    RT --> MCPS
+    RT --> SBX
+    RT --> MQ --> RT
+    RT --> PG & RD & VDB & KG & S3
+    GWP --> EXT[External model providers]
+    GWP --> VLLM[GPU node pool<br/>vLLM]
+    OTEL --> MON[Grafana · LangSmith · Phoenix]
+    API -.-> KMS
+    GWP -.-> KMS

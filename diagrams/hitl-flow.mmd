@@ -1,0 +1,15 @@
+flowchart LR
+    A[Agent proposes action] --> R{Risk classifier}
+    R -->|low| X[Auto-execute]
+    R -->|medium| C[Confidence & policy check]
+    C -->|pass| X
+    C -->|fail| Q
+    R -->|high / irreversible| Q[Approval queue]
+    Q --> H[Human reviewer]
+    H -->|approve| X
+    H -->|edit| X
+    H -->|reject| N[Agent receives rejection<br/>re-plans]
+    X --> O[Outcome]
+    O --> F[Feedback & corrections]
+    F --> D[(Eval datasets<br/>fine-tuning data)]
+    D --> I[Continuous improvement]
