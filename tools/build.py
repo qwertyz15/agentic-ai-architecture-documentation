@@ -69,7 +69,7 @@ class Page:
 
         # architecture image
         def arch(m):
-            src = "assets/architecture-diagram.png"
+            src = "assets/architecture-diagram.svg"
             return (f'<figure class="figure arch"><img src="{src}" alt="Architecture of an Agentic AI Application">'
                     f'<figcaption><b>{fig_label()}.</b> Reference architecture of a production-ready Agentic AI application, '
                     f'showing the twelve numbered layers used throughout this document.</figcaption></figure>')

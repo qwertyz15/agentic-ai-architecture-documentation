@@ -1,7 +1,7 @@
 # Agentic AI Application Architecture — Engineering Design Documentation
 
 Complete engineering design documentation for a production-grade Agentic AI application,
-derived from the twelve-layer reference architecture diagram (`assets/architecture-diagram.png`).
+derived from the twelve-layer reference architecture diagram (`assets/architecture-diagram.svg`).
 
 Two deliverables are included:
 
@@ -28,7 +28,7 @@ agentic-ai-architecture-documentation/
 ├── Agentic-AI-Architecture-Design-Document.pdf
 ├── README.md
 ├── assets/
-│   ├── architecture-diagram.png     # Source architecture diagram
+│   ├── architecture-diagram.svg     # Source architecture diagram
 │   ├── diagrams/*.svg               # Rendered Mermaid diagrams (13)
 │   ├── icons/                       # Favicon and logo
 │   ├── style.css, site.js           # Site styling and behaviour (sidebar, search, scroll-spy)
